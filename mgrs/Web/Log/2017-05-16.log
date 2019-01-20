@@ -1,0 +1,3 @@
+[2017-05-16 22:10:29,217][25][ERROR][Web.Areas.Main.Controllers.TeamImportController:540] - System.Exception: Duplicate entry '024b9f8b-139f-4401-8328-ee0aa27f183c' for key 'PRIMARY'
+   在 BLL.TeamRegBll.ImpTeams(List`1 mus, Int32& count) 位置 d:\tao.li\02_src\mgrs\BLL\TeamRegBll.cs:行号 805
+   在 Web.Areas.Main.Controllers.TeamImportController.confirm(String matchid, String fid, String fc) 位置 d:\tao.li\02_src\mgrs\Web\Areas\Main\Controllers\TeamImportController.cs:行号 534

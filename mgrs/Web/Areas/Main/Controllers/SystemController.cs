@@ -24,11 +24,11 @@ namespace Web.Areas.Main.Controllers
             {
                 if (bannerType == r.Value.ToString())
                 {
-                    ViewBag.BannerType += "<option value='" + r.Value.ToString() + "' selected>" + r.Text.ToString() + "</option>";
+                    ViewBag.Banner_Type += "<option value='" + r.Value.ToString() + "' selected>" + r.Text.ToString() + "</option>";
                 }
                 else
                 {
-                    ViewBag.BannerType += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
+                    ViewBag.Banner_Type += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
                 }
             }
 

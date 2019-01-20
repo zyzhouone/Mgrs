@@ -19,7 +19,7 @@
             </a>
         </div>
     </div>
-    @*<div class="span8">
+    <div class="span8">
         @using (Html.BeginForm(null, null, null, FormMethod.Get, new { id = "search" }))
         {
             <div class="dataTables_filter">
@@ -32,12 +32,12 @@
                     <span>类型：</span>
                     <select id="bannerType" name="bannerType" data-placeholder="请选择Banner类型" class="m-wrap large">
                         <option value="" >请选择Banner类型</option>
-                        @Html.Raw(ViewBag.BannerType)
+                        @Html.Raw(ViewBag.Banner_Type)
                     </select>
                 </label>
             </div>
         }
-    </div>*@
+    </div>
 </div>
 @*
     <div class="alert">
@@ -53,9 +53,9 @@
                 <th style="width: 8px;">
                     <input type="checkbox" id="checkall" class="group-checkable" />
                 </th>
-                @*<th>
+                <th>
                     类型
-                </th>*@
+                </th>
                 <th>
                     开始时间
                 </th>
@@ -80,7 +80,7 @@
                     <td>
                         <input type="checkbox" class="checkboxes" name='ids' value='@m.Banner_Id' />
                     </td>
-                    @*<td>
+                    <td>
                         @foreach (var item in ViewData["BannerType"] as List<SelectListItem>)
                         {
                             if (item.Value == m.Banner_Type)
@@ -88,7 +88,7 @@
                                 @item.Text
                             }
                         }
-                    </td>*@
+                    </td>
                     <td>
                         @m.StartDateTime.ToString("yyyy-MM-dd")
                     </td>
