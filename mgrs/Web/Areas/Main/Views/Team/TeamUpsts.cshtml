@@ -1,0 +1,50 @@
+﻿@using Model;
+@using BLL;
+@using Web;
+
+@model tblteamsEntity
+
+@{
+    ViewBag.Title = "TeamUpsts";
+    Layout = "~/Views/Shared/_Layout.Edit.cshtml";
+}
+
+@section PageSpecificJavascriptIncludes{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#mainForm").submit(function () {
+                $("#submit").click();
+                return true;
+
+            });
+        });
+    </script>
+}
+
+@section MainContent{
+    <script type="text/javascript" src="@Url.Content("~/scripts/js/selector/jquery-1.10.js")"></script>
+    <div class="portlet-body form-horizontal form-bordered form-row-stripped">
+        <div class="row-fluid">
+            @Html.HiddenFor(m => m.teamid)
+            @Html.HiddenFor(m => m.match_id)
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>队伍名称：</label>
+                <div class="controls">
+                   @Model.Teamname
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">状态：</label>
+                <div class="controls">
+                    <select id="optStatus" name="optStatus" data-placeholder="请选择状态" class="m-wrap large">
+                        @Html.Raw(ViewBag.Status)
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+

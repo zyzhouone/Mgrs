@@ -1,0 +1,187 @@
+﻿@using Model;
+@using BLL;
+@using Web;
+
+@model tblmatch
+
+@{
+    ViewBag.Title = "新增";
+    Layout = "~/Views/Shared/_Layout.Edit3.cshtml";
+}
+
+@section PageSpecificJavascriptIncludes{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#mainForm").submit(function () {
+
+                return true;
+            });
+        });
+    </script>
+}
+@section MainContent{
+<link href="@Url.Content("~/assets/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css")" rel="stylesheet" />
+<script type="text/javascript" src="@Url.Content("~/assets/bootstrap-datetimepicker/jquery-1.8.3.min.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/assets/ckeditor/ckeditor.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/assets/bootstrap-datetimepicker/bootstrap-datetimepicker.js")"></script>
+    <div class="portlet-body form-horizontal form-bordered form-row-stripped">
+        <div class="row-fluid">
+
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>赛事名称：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Match_name, new { @class = "m-wrap large" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Match_name)</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>赛事描述：</label>
+                <div class="controls">
+                    @Html.TextAreaFor(m => m.Content, new { @class = "m-wrap large" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Content)</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>赛事须知：</label>
+                <div class="controls">
+                    <textarea cols="200" id="Notice" name="Notice" rows="10"></textarea>
+                    <script>
+                        CKEDITOR.replace('Notice'
+                            , { filebrowserImageUploadUrl: '../ckeditorUpload' }
+                        );
+
+                    </script>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">省市：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Area1, new { @class = "m-wrap small" })
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">区县：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Area2, new { @class = "m-wrap small" })
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">预报名开始：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Date1, new { @class = "m-wrap small", id = "Date1" })
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">预报名结束：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Date2, new { @class = "m-wrap small", id = "Date2" })
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">正式报名：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Date3, new { @class = "m-wrap small", id = "Date3" })
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">开赛时间：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Date4, new { @class = "m-wrap small", id = "Date4" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>赛事图片(大)</label>
+                <div class="controls">                  
+                    <input type="file" id="Pic1" name="Pic1" class=" multi max-1 with-preview" data-maxsize="1024" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">赛事图片(小)</label>
+                <div class="controls">
+                    <input type="file" id="Pic2" name="Pic2" class="multi max-1 with-preview" data-maxsize="1024" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>任务书头图</label>
+                <div class="controls">
+                    <input type="file" id="Tasklogo" name="Tasklogo" class=" multi max-1 with-preview" data-maxsize="1024" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">赛事logo图</label>
+                <div class="controls">
+                    <input type="file" id="Logopic" name="Logopic" class="multi max-1 with-preview" data-maxsize="1024" />
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">图片集锦：</label>
+                <div class="controls">
+                    <select id="optStatus" name="optIspic" data-placeholder="请选择状态" class="m-wrap small">
+                        @Html.Raw(ViewBag.Ispic)
+                    </select>
+                </div>
+            </div>
+            @*<div class="control-group">
+                <label class="control-label">其他图片(多选)</label>
+                <div class="controls">
+                    <input type="file" id="otherPics" name="otherPics" multiple="multiple" class="multi with-preview" />
+                </div>
+            </div>*@
+            <div class="control-group">
+                <label class="control-label">状态：</label>
+                <div class="controls">
+                    <select id="optStatus" name="optStatus" data-placeholder="请选择状态" class="m-wrap small">
+                        @Html.Raw(ViewBag.Status)
+                    </select>
+                </div>
+            </div>
+            </div>
+        </div>
+}
+
+
+<script>
+    $(function () {
+        $("#Date1").datetimepicker({
+            format: "yyyy-mm-dd hh:ii",
+            autoclose: true,
+            todayBtn: true,
+            //startDate: "2013-02-14 10:00",
+            minuteStep: 5
+        });
+
+        $("#Date2").datetimepicker({
+            format: "yyyy-mm-dd hh:ii",
+            autoclose: true,
+            todayBtn: true,
+           // startDate: "2013-02-14 10:00",
+            minuteStep: 5
+        });
+
+        $("#Date3").datetimepicker({
+            format: "yyyy-mm-dd hh:ii",
+            autoclose: true,
+            todayBtn: true,
+           // startDate: "2013-02-14 10:00",
+            minuteStep: 5
+        });
+
+        $("#Date4").datetimepicker({
+            format: "yyyy-mm-dd hh:ii",
+            autoclose: true,
+            todayBtn: true,
+           // startDate: "2013-02-14 10:00",
+            minuteStep: 5
+        });
+        
+    });
+
+</script>
+

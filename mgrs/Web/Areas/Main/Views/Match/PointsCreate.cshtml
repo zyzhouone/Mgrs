@@ -1,0 +1,83 @@
+﻿@using Model;
+@using BLL;
+@using Web;
+
+@model tblpointsView
+
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.Edit1.cshtml";
+}
+
+@section PageSpecificJavascriptIncludes{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#mainForm").submit(function () {
+
+                return true;
+            });
+        });
+    </script>
+}
+
+@section MainContent{
+    <script type="text/javascript" src="@Url.Content("~/scripts/js/selector/jquery-1.10.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Assets/ckeditor/ckeditor.js")"></script>
+    
+    <div class="portlet-body form-horizontal form-bordered form-row-stripped">
+        <div class="row-fluid">
+            <input type="hidden" id="linesid" name="linesid" value="@ViewBag.linesid" />
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>线路名称：</label>
+                <div class="controls">
+                    <input type="text" value="@ViewBag.linesname" readonly="readonly" class="m-wrap large" />
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>标识名称：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Pointname, new { @class = "m-wrap large" })
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>简介：</label>
+                <div class="controls">
+                    <textarea cols="200" id="Content" name="Content" rows="10"></textarea>
+                    <script>
+                        CKEDITOR.replace('Content'
+                            , { filebrowserImageUploadUrl: '../ckeditorUpload' }
+                        );
+
+                    </script>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">序号：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Sort, new { @class = "m-wrap small" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Sort)</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">类型：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Pointtype, new { @class = "m-wrap small" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Pointtype)</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">状态：</label>
+                <div class="controls">
+                    <select id="optStatus" name="optStatus" data-placeholder="请选择状态" class="m-wrap small">
+                        @Html.Raw(ViewBag.Status)
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

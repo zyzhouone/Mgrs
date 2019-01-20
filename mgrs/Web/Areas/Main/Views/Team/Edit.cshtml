@@ -1,0 +1,125 @@
+﻿@using Model;
+@using BLL;
+@using Web;
+
+@model tblteamsEntity
+
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.Edit.cshtml";
+}
+
+@section PageSpecificJavascriptIncludes{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#mainForm").submit(function () {
+                $("#submit").click();
+                return true;
+
+            });
+        });
+    </script>
+}
+
+@section MainContent{
+<script type="text/javascript" src="@Url.Content("~/scripts/js/selector/jquery-1.10.js")"></script>
+    <div class="portlet-body form-horizontal form-bordered form-row-stripped">
+        <div class="row-fluid">
+            @Html.HiddenFor(m => m.teamid)
+            @Html.HiddenFor(m => m.match_id)
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>队伍名称：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Teamname, new { @class = "m-wrap large" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Teamname)</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">所属公司：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Company, new { @class = "m-wrap large" })
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">线路类型：</label>
+                <div class="controls">
+                    <select id="optLine" name="optLine" data-placeholder="请选择类型" class="m-wrap small">
+                        @Html.Raw(ViewBag.line)
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">线路名称：</label>
+                <div class="controls">
+                    <select id="optLines" name="optLines" data-placeholder="请选择线路" class="m-wrap small">
+                        @Html.Raw(ViewBag.lines)
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">是否邀请：</label>
+                <div class="controls">
+                    <select id="optTeamtype" name="optTeamtype" data-placeholder="请选择状态" class="m-wrap small">
+                        @Html.Raw(ViewBag.Teamtype)
+                    </select>
+                </div>
+            </div>
+            <div class="control-group" style="display:none;">
+                <label class="control-label">状态：</label>
+                <div class="controls">
+                    <select id="optStatus" name="optStatus" data-placeholder="请选择状态" class="m-wrap small">
+                        @Html.Raw(ViewBag.Status)
+                    </select>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">队伍编号：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Teamno, new { @class = "m-wrap large" })
+                </div>
+            </div>
+        </div>
+    
+    </div>
+}
+
+
+<script type="text/javascript" src="@Url.Content("~/scripts/js/selector/jquery-1.10.js")"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#optLine").change(function () {
+            var lineid = $("#optLine").find("option:selected").val();
+            var matchid = $("#match_id").val();
+            if (matchid != "") {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: encodeURI("/Team/GetLinesByLineid?matchid=" + matchid + "&lineid=" + lineid),
+                    data: {},
+                    dataType: "json",
+                    success: function (data) {
+                        if (data != "") {
+                            $("#optLines").empty();
+                            $.each(data, function (index, content) {
+                                $("#optLines").append("<option value='" + content.Value + "'>" + content.Text + "</option>");
+                            });
+
+                            $("#optLines").trigger("chosen:updated");
+                        }
+                        else {
+                            $("#optLines").empty();
+                            $("#optLines").trigger("chosen:updated");
+                        }
+                    }
+
+                });
+            } else {
+                $("#optLines").empty();
+            }
+
+        })
+    });
+</script>

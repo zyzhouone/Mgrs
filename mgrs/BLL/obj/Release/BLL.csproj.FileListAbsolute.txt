@@ -1,0 +1,10 @@
+D:\20171229\mgrs\Web\bin\BLL.dll
+D:\20171229\mgrs\Web\bin\BLL.pdb
+D:\20171229\mgrs\BLL\obj\Release\BLL.csprojResolveAssemblyReference.cache
+D:\20171229\mgrs\BLL\obj\Release\BLL.dll
+D:\20171229\mgrs\BLL\obj\Release\BLL.pdb
+D:\项目\登协\mgrs\Web\bin\BLL.dll
+D:\项目\登协\mgrs\Web\bin\BLL.pdb
+D:\项目\登协\mgrs\BLL\obj\Release\BLL.csprojResolveAssemblyReference.cache
+D:\项目\登协\mgrs\BLL\obj\Release\BLL.dll
+D:\项目\登协\mgrs\BLL\obj\Release\BLL.pdb

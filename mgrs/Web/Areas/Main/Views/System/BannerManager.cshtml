@@ -1,0 +1,125 @@
+﻿@using Utls;
+@using Model;
+@using Web;
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model PagedList<tblbanner>
+
+<div class="row-fluid">
+    <div class="span4">
+        <div>
+            <a class="btn red" id="delete" href="javascript:;">
+                    <i class="icon-trash icon-white">
+                    </i>删除
+                </a>
+            <a class="btn blue thickbox" title='添加Banner' href="@Url.Action("CreateBinner")?TB_iframe=true&height=550&width=600">
+                <i class="icon-plus icon-white"></i>添加
+            </a>
+        </div>
+    </div>
+    @*<div class="span8">
+        @using (Html.BeginForm(null, null, null, FormMethod.Get, new { id = "search" }))
+        {
+            <div class="dataTables_filter">
+                <label>
+                    <button type="submit" class="btn">
+                        搜索 <i class="icon-search"></i>
+                    </button>
+                </label>
+                <label>
+                    <span>类型：</span>
+                    <select id="bannerType" name="bannerType" data-placeholder="请选择Banner类型" class="m-wrap large">
+                        <option value="" >请选择Banner类型</option>
+                        @Html.Raw(ViewBag.BannerType)
+                    </select>
+                </label>
+            </div>
+        }
+    </div>*@
+</div>
+@*
+    <div class="alert">
+        <button class="close" data-dismiss="alert"></button>
+        <strong>用户权限相关：</strong>
+        请编辑其所属角色的权限，用户的权限是其所有角色所拥有的权限汇总！
+    </div>*@
+@using (Html.BeginForm("BannerDel", "System", FormMethod.Post, new { id = "mainForm" }))
+{
+    <table class="table table-striped table-hover ">
+        <thead>
+            <tr>
+                <th style="width: 8px;">
+                    <input type="checkbox" id="checkall" class="group-checkable" />
+                </th>
+                @*<th>
+                    类型
+                </th>*@
+                <th>
+                    开始时间
+                </th>
+                <th>
+                    结束时间
+                </th>
+                <th>
+                    图片
+                </th>
+                <th>
+                    排序
+                </th>
+                <th>
+                   创建时间
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" class="checkboxes" name='ids' value='@m.Banner_Id' />
+                    </td>
+                    @*<td>
+                        @foreach (var item in ViewData["BannerType"] as List<SelectListItem>)
+                        {
+                            if (item.Value == m.Banner_Type)
+                            {
+                                @item.Text
+                            }
+                        }
+                    </td>*@
+                    <td>
+                        @m.StartDateTime.ToString("yyyy-MM-dd")
+                    </td>
+                    <td>
+                        @m.EndDateTime.ToString("yyyy-MM-dd")
+                    </td>
+                    <td>
+                        <div class="control-group">
+                            <div class="controls">
+                                <div id="Pic2_view">
+                                    <a class="thickbox" title='查看大图' href="http://@HttpContext.Current.Request.Url.Host:@Request.Url.Port/UploadFiles/@m.PicName">
+                                        <img style="width:100px;height:60px" src="http://@HttpContext.Current.Request.Url.Host:@Request.Url.Port/UploadFiles/@m.PicName" />
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        @m.Sort
+                    </td>
+                    <td>
+                        @if (m.Modifydatetime != null)
+                        {
+                            @m.Modifydatetime.ToString("yyyy-MM-dd  HH:mm:ss");
+                        }
+                    </td>                  
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<div class="dataTables_paginate paging_bootstrap pagination">
+    @Html.Pager(Model, new PagerOptions() { ShowTotalItemCount = true })
+</div>

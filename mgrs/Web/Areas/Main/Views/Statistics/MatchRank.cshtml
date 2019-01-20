@@ -1,0 +1,131 @@
+﻿@using Utls;
+@using Model;
+@using Web;
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model PagedList<MatchRankView>
+
+<div class="row-fluid">
+    <div class="span12">
+        @using (Html.BeginForm(null, null, null, FormMethod.Get, new { id = "search" }))
+        {
+            <div class="dataTables_filter">
+                
+                <label>
+                    <button type="submit" class="btn">搜索 <i class="icon-search"></i></button>
+                    <button type="button" id="exportExcel" class="btn" onclick="ExportMatchRank();">导出 <i class="icon-download"></i></button>
+                </label>
+                <label>
+                    <span>线路名称：</span>
+                    <select id="optLines" name="optLines" data-placeholder="请选择线路" class="m-wrap large">
+                        @Html.Raw(ViewBag.Lines)
+                    </select>
+                </label>
+                <label>
+                    <span>赛事名称：</span>
+                    <select id="optMatch" name="optMatch" data-placeholder="请选择赛事" class="m-wrap large">
+                        @Html.Raw(ViewBag.Matchs)
+                    </select>
+                </label>
+            </div>
+        }
+    </div>
+</div>
+  <table class="table table-striped table-hover ">
+        <thead>
+            <tr>
+                <th>线路名称</th>
+                <th>队伍名称</th>
+                <th>队长</th>
+                <th>电话</th>
+                <th>成绩</th>
+                <th>开始时间</th>
+                <th>结束时间</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                 foreach (var m in Model)
+                {
+                    <tr>
+                        <td>@m.linename</td>
+                        <td>@m.teamname</td>
+                        <td>@m.nickname</td>
+                        <td>@m.mobile</td>
+                        <td>@m.total</td>
+                        <td>@m.begintime</td>
+                        <td>@m.endtime</td>
+                    </tr>
+                }
+            }
+
+        </tbody>
+    </table>
+
+<div class="dataTables_paginate paging_bootstrap pagination">
+    @Html.Pager(Model, new PagerOptions() { ShowTotalItemCount = true })
+</div>
+
+<script type="text/javascript" src="@Url.Content("~/scripts/js/selector/jquery-1.10.js")"></script>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#optMatch").change(function () {
+            var matchid = $("#optMatch").find("option:selected").val();
+            if (matchid != "") {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: encodeURI("GetLinesByMatch?matchid=" + matchid),
+                    data: {},
+                    dataType: "json",
+                    success: function (data) {
+                        if (data != "") {
+                            $("#optLines").empty();
+                            $.each(data, function (index, content) {
+                                $("#optLines").append("<option value='" + content.Value + "'>" + content.Text + "</option>");
+                            });
+
+                            $("#optLines").trigger("chosen:updated");
+                        }
+                        else {
+                            $("#optLines").empty();
+                            $("#optLines").trigger("chosen:updated");
+                        }
+                    }
+
+                });
+            } else {
+                $("#optLines").empty();
+            }
+
+        })
+    });
+
+    function ExportMatchRank() {
+        var matchid = $("#optMatch").find("option:selected").val();
+        var linesid = $("#optLines").find("option:selected").val();
+        if (matchid != "") {
+            $.ajax({
+                type: "POST",
+                url: encodeURI("/Statistics/ExportMatchRank?matchid=" + matchid + "&linesid=" + linesid),
+                data: {},
+                dataType: "text",
+                success: function (data) {
+                    if (data != "") {
+                        window.open("http://mgrs.chengshidingxiang.com/data/" + data);
+                    } else {
+                        alert("导出失败！");
+                    }
+                }
+            });
+        }
+
+    }
+
+
+</script>

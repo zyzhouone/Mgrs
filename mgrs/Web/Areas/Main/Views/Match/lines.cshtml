@@ -1,0 +1,192 @@
+﻿@using Utls;
+@using Model;
+@using Web;
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model PagedList<tbllinesView>
+
+<div class="row-fluid">
+    <div class="span4">
+        <div>
+            <a class="btn red" id="delete" href="javascript:;">
+                <i class="icon-trash icon-white">
+                </i>删除
+            </a> <a class="btn blue thickbox" title='添加新线路' href="@Url.Action("LinesCreate")?TB_iframe=true&height=520&width=500">
+                <i class="icon-plus icon-white"></i>新增
+            </a>
+        </div>
+    </div>
+    <div class="span8">
+        @using (Html.BeginForm(null, null, null, FormMethod.Get, new { id = "search" }))
+        {
+            <div class="dataTables_filter">
+                <label>
+                    <button type="submit" class="btn">
+                        搜索 <i class="icon-search"></i>
+                    </button>
+                </label>
+                <label>
+                    <span>线路类型：</span>
+                    <select id="optLine" name="optLine" class="m-wrap small" style="width:180px">
+                        <option value="">请选择线路类型</option>
+                        @Html.Raw(ViewBag.Line)
+                    </select>
+                </label>
+                <label>
+                    <span>赛事名称：</span>
+                    <select id="optMatch" name="optMatch" class="m-wrap large" style="width:180px">
+                        <option value="">请选择赛事</option>
+                        @Html.Raw(ViewBag.Match)
+                    </select>
+                </label>
+            </div>
+        }
+    </div>
+</div>
+@*
+    <div class="alert">
+        <button class="close" data-dismiss="alert"></button>
+        <strong>用户权限相关：</strong>
+        请编辑其所属角色的权限，用户的权限是其所有角色所拥有的权限汇总！
+    </div>*@
+@using (Html.BeginForm("LinesDelete", "Match", FormMethod.Post, new { id = "mainForm" }))
+{
+    <table class="table table-striped table-hover ">
+        <thead>
+            <tr>
+                <th style="width: 8px;">
+                    <input type="checkbox" id="checkall" class="group-checkable" />
+                </th>
+                <th>
+                    赛事名称
+                </th>
+                <th>
+                    线路类型
+                </th>
+                <th>
+                    线路名称
+                </th>
+                <th>
+                    价格
+                </th>
+                <th>
+                    人数
+                </th>
+                <th>
+                    支付名额
+                </th>
+                <th>
+                    简介
+                </th>
+                <th>
+                    标识点数
+                </th>
+                <th>
+                    线路属性
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" class="checkboxes" name='ids' value='@m.lines_id' />
+                    </td>
+                    <td>
+                        @m.Matchname
+                    </td>
+                    <td>
+                        @m.Line_name
+                    </td>
+                    <td>
+                        @m.Linename
+                    </td>
+                    <td>
+                        @m.Price
+                    </td>
+                    <td>
+                        @m.Playercount
+                    </td>
+                    <td>
+                        @m.Paycount
+                    </td>
+                    <td>
+                        <span class="Content" title="@m.Content">@m.Content</span>
+                    </td>
+
+                    <td>
+                        @m.Pointscount
+                    </td>
+                    <td>
+                        @foreach (var item in ViewData["Status"] as List<SelectListItem>)
+                        {
+                            if (item.Value == m.Status.ToString())
+                            {
+                                @item.Text
+                            }
+                        }
+                    </td>
+                    <td>
+                        <a class="btn mini purple thickbox" title='编辑线路资料' href="@Url.Action("LinesEdit", new { id = m.lines_id })?TB_iframe=true&height=520&width=500">
+                            <i class="icon-edit"></i>编辑
+                        </a>
+                        <a class="btn mini purple" title='线路标识点管理' href="@Url.Action("Points", new { id = m.lines_id })">
+                            <i class="icon-edit"></i>标识点管理
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<div class="dataTables_paginate paging_bootstrap pagination">
+    @Html.Pager(Model, new PagerOptions() { ShowTotalItemCount = true })
+</div>
+<script type="text/javascript" src="@Url.Content("~/scripts/js/selector/jquery-1.10.js")"></script>
+<script>
+    $(document).ready(function () {
+        //限制字符个数
+        $(".Content").each(function () {
+            var maxwidth = 40;
+            if ($(this).text().length > maxwidth) {
+                $(this).text($(this).text().substring(0, maxwidth));
+                $(this).html($(this).html() + '...');
+            }
+        });
+
+        $("#optMatch").change(function () {
+            var matchid = $("#optMatch").find("option:selected").val();
+            if (matchid != "") {
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: encodeURI("GetLineByMatch?matchid=" + matchid),
+                    data: {},
+                    dataType: "json",
+                    success: function (data) {
+                        if (data != "") {
+                            $("#optLine").empty();
+                            $.each(data, function (index, content) {
+                                $("#optLine").append("<option value='" + content.Value + "'>" + content.Text + "</option>");
+                            });
+
+                            $("#optLine").trigger("chosen:updated");
+                        }
+                        else {
+                            $("#optLine").empty();
+                            $("#optLine").trigger("chosen:updated");
+                        }
+                    }
+
+                });
+            } else {
+                $("#optLine").empty();
+            }
+           
+        })
+    });
+</script>
