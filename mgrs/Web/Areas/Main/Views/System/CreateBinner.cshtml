@@ -26,18 +26,19 @@
 
             <div id="msg">@Html.Raw(ViewBag.ErrorMsg)</div>
             <div class="control-group">
-                <label class="control-label"><span class="required">*</span>赛事名称：</label>
-                <div class="controls">
-                    <select id="optMatch" name="optMatch" data-placeholder="请选择赛事" class="m-wrap large">
-                        @Html.Raw(ViewBag.Matchs)
-                    </select>
-                </div>
-            </div>      
-            <div class="control-group">
                 <label class="control-label"><span class="required">*</span>类型：</label>
                 <div class="controls">
                     <select id="optBannerType" name="optBannerType" data-placeholder="请选择Banner类型" class="m-wrap large">
                         @Html.Raw(ViewBag.BannerType)
+                    </select>
+                </div>
+            </div>      
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>赛事名称：</label>
+                <div class="controls">
+                    <select id="optMatch" name="optMatch" data-placeholder="请选择赛事" class="m-wrap large">
+                        <option value="">--请选择赛事--</option>
+                        @Html.Raw(ViewBag.Matchs)
                     </select>
                 </div>
             </div>           
@@ -81,6 +82,8 @@
                     </div>
                 </div>
     </div>
+            </div>
+        </div>
 }
 <script type="text/javascript" src="@Url.Content("~/scripts/js/selector/jquery-1.10.js")"></script>
 <script type="text/javascript" src="@Url.Content("~/scripts/js/datepicker/jquery-ui.js")"></script>
