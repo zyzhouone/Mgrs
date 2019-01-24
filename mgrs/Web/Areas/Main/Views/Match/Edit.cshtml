@@ -210,6 +210,14 @@
                     </select>
                 </div>
             </div>
+
+            <div class="control-group">
+
+                <div class="controls">
+                    <input type="button" onclick="TopMatch()" class="btn blue thickbox" value="置顶" />
+                 
+                    </div>
+                </div>
             </div>
         </div>
 }
@@ -250,6 +258,25 @@
 
     });
 
+
+    function TopMatch() {
+        alert("2")
+        $.ajax({
+            type: "Post",
+            contentType: "application/json",
+            url: "/match/TopMatch?id=@Model.Match_id",
+            dataType: "json",
+            success: function (data) {
+                
+                if (data == 1) {
+                 alert("置顶成功")
+                } else {
+
+                    alert("置顶失败")
+                }
+            }
+        });
+    }
 </script>
 
 

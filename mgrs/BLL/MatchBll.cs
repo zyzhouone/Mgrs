@@ -227,6 +227,25 @@ namespace BLL
         }
 
         /// <summary>
+        /// 赛事置顶
+        /// zzy 2019-01-24
+        /// </summary>
+        /// <param name="matchid"></param>
+        /// <returns></returns>
+        public int TopMatch(string matchid)
+        {
+            using (var db = new BFdbContext())
+            {
+                string sql="update tbl_match set sort=DATE_FORMAT(date4,'%Y%m%d') where left(sort,4)='9999'";
+                db.ExecuteSqlCommand(sql);
+                sql=string.Format(@"update tbl_match set sort=CONCAT('9999',DATE_FORMAT(date4,'%m%d')) where match_id='{0}'",matchid);
+
+           
+                return db.ExecuteSqlCommand(sql);
+            }
+        }
+
+        /// <summary>
         /// 查询线路类型信息
         /// </summary>
         /// <param name="matchname"></param>

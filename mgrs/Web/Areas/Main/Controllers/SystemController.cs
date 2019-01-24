@@ -64,6 +64,12 @@ namespace Web.Areas.Main.Controllers
 
         public ActionResult CreateBinner()
         {
+            //获取赛事列表
+            List<SelectListItem> Matchs = new MatchBll().GetMatchsList();
+            foreach (SelectListItem r in Matchs)
+            {
+                ViewBag.Matchs += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
+            }
             List<SelectListItem> Status = new MemberBll().GetDict(18);
             foreach (SelectListItem r in Status)
             {
@@ -96,6 +102,8 @@ namespace Web.Areas.Main.Controllers
                     model.PicName = filename;
                 }
             }
+
+            model.Match_Id = fc["optMatch"].ToString();
             model.Banner_Type = fc["optBannerType"].ToString();
             model.StartDateTime = Convert.ToDateTime(fc["startDateTime"]);
             model.EndDateTime = Convert.ToDateTime(fc["EndDateTime"].ToString());

@@ -50,7 +50,8 @@ namespace Web.Areas.Main.Controllers
             {
                 ViewBag.Ispic += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
             }
-            return View();
+            tblmatch model = new tblmatch();
+            return View(model);
         }
 
         [HttpPost]
@@ -337,6 +338,29 @@ namespace Web.Areas.Main.Controllers
             return this.RefreshParent();
         }
 
+        /// <summary>
+        /// 置顶赛事
+        /// zzy 2019-0124
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="fc"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult TopMatch(string id)
+        {
+
+            var bll = new MatchBll();
+            JsonResult jr = new JsonResult();
+            try
+            {
+                jr.Data = bll.TopMatch(id);
+            }catch(Exception ex)
+            {
+                jr.Data = -1;
+            }
+            return jr;
+
+        }
         [HttpPost]
         public ActionResult Delete(List<string> ids)
         {

@@ -49,6 +49,11 @@ namespace Model
         public string Modifyuser
         { get; set; }
 
-
+        [Column("`match_id`")]
+        public string Match_Id
+        {
+            get;
+            set;
+        }
     }
 }
