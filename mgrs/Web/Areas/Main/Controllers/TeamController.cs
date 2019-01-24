@@ -19,12 +19,20 @@ namespace Web.Areas.Main.Controllers
         //
         // GET: /Main/Team/
 
-        public ActionResult Index(string matchname, string teamname,string company, string phone, string optStatus,string optType,string linename, string optiscoupon,int? pageIndex)
+        public ActionResult Index(string matchname, string teamname, string company, string phone, string optStatus, string optType, string linename, string optiscoupon, int? pageIndex, bool isQuery = false)
         {
             var teams = new List<tblteamsVew>();
             try
             {
-                teams = new TeamBll().GetTeams(matchname, teamname,company, phone, optStatus, optType, linename, optiscoupon,pageIndex.GetValueOrDefault(1));
+                if (isQuery)
+                {
+                    teams = new TeamBll().GetTeams(matchname, teamname, company, phone, optStatus, optType, linename, optiscoupon, pageIndex.GetValueOrDefault(1));
+                }
+                else
+                {
+                    teams = new PagedList<tblteamsVew>(teams, 1, 1);
+                }
+
                 List<SelectListItem> Status = new MemberBll().GetDict(5);
                 ViewData["Status"] = Status;
 
@@ -108,7 +116,7 @@ namespace Web.Areas.Main.Controllers
                             foreach (SelectListItem r in Status)
                             {
                                 if (o[i].Status.ToString() == r.Value)
-                                     dr[fields[j]] = r.Text.ToString();
+                                    dr[fields[j]] = r.Text.ToString();
                             }
                             break;
                         case "Createtime":
@@ -259,7 +267,7 @@ namespace Web.Areas.Main.Controllers
         public JsonResult EditCheckTeamName(string teamid, string match_id, string Teamname)
         {
             bool isValidate = true;
-            var teams = new TeamBll().GetOtherTeams(match_id,teamid);
+            var teams = new TeamBll().GetOtherTeams(match_id, teamid);
 
             foreach (var m in teams)
             {
@@ -298,12 +306,12 @@ namespace Web.Areas.Main.Controllers
 
 
         [HttpPost]
-        public ActionResult GetLinesByLineid(string matchid,string lineid)
+        public ActionResult GetLinesByLineid(string matchid, string lineid)
         {
             List<SelectListItem> lines = new List<SelectListItem>();
             if (lineid != "")
             {
-               lines = new TeamBll().GetLinesByLineid(matchid, lineid);
+                lines = new TeamBll().GetLinesByLineid(matchid, lineid);
             }
             else
             {
@@ -359,17 +367,19 @@ namespace Web.Areas.Main.Controllers
             {
                 foreach (SelectListItem r in line)
                 {
-                        ViewBag.line += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
+                    ViewBag.line += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
                 }
 
-            }else
+            }
+            else
             {
                 foreach (SelectListItem r in line)
                 {
                     if (model.Lineid.ToString() == r.Value)
                     {
                         ViewBag.line += "<option value='" + r.Value.ToString() + "'selected>" + r.Text.ToString() + "</option>";
-                    }else
+                    }
+                    else
                     {
                         ViewBag.line += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
                     }
@@ -449,10 +459,10 @@ namespace Web.Areas.Main.Controllers
 
             try
             {
-              int res=  bll.EditTeam(model);
+                int res = bll.EditTeam(model);
 
-              if (res == -1)
-                  return Alert("队伍编号重复");
+                if (res == -1)
+                    return Alert("队伍编号重复");
 
             }
             catch (ValidException ex)
@@ -511,15 +521,15 @@ namespace Web.Areas.Main.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult TeamUsers(string matchid,string teamid)
+        public ActionResult TeamUsers(string matchid, string teamid)
         {
-            if (teamid!=null)
-            teamid = teamid.Replace("?", "");
+            if (teamid != null)
+                teamid = teamid.Replace("?", "");
             var teamuser = new TeamBll().getTeamUsers(matchid, teamid);
             var team = new TeamBll().GetTeamById(teamid);
             if (team != null)
             {
-                ViewBag.teamname = team.Teamname; 
+                ViewBag.teamname = team.Teamname;
             }
 
             if (team.Status != 0)
