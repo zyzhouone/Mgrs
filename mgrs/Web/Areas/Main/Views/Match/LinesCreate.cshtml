@@ -1,0 +1,225 @@
+﻿@using Model;
+@using BLL;
+@using Web;
+
+@model tbllines
+
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.Edit.cshtml";
+}
+
+@section PageSpecificJavascriptIncludes{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#mainForm").submit(function () {              
+                if ($("#optMatch").find("option:selected").val() == "")
+                {
+                    $("#match_id").show();
+                    $("#submitloading").hide();
+                    return false;
+                }
+
+                if ($("#optLine").find("option:selected").val() == "" || $("#optLine").find("option:selected").val() == null) {
+                    $("#lineid").show();
+                    $("#submitloading").hide();
+                    return false;
+                }
+                return true;
+            });
+        });
+    </script>
+}
+
+@section MainContent{
+<script type="text/javascript" src="@Url.Content("~/scripts/js/selector/jquery-1.10.js")"></script>
+<script type="text/javascript" src="@Url.Content("~/Assets/ckeditor/ckeditor.js")"></script>
+    <div class="portlet-body form-horizontal form-bordered form-row-stripped">
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>赛事名称：</label>
+                <div class="controls">
+                    <select id="optMatch" name="optMatch"  class="m-wrap large">
+                        <option value="">请选择赛事</option>
+                        @Html.Raw(ViewBag.Match)
+                    </select>
+                    <span class="help-inline" id="match_id">
+                        <span class="field-validation-error">
+                            <span  class="">赛事名称不能为空！</span>
+                        </span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>线路类型：</label>
+                <div class="controls">
+                    <select id="optLine" name="optLine" class="m-wrap large">
+                        @Html.Raw(ViewBag.Line)
+                    </select>
+                    <span class="help-inline" id="lineid">
+                        <span class="field-validation-error">
+                            <span class="">线路类型不能为空！</span>
+                        </span>
+                    </span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>线路名称：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Linename, new { @class = "m-wrap large" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Linename)</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>简介：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Content, new { @class = "m-wrap large" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Content)</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">须知：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Notice, new { @class = "m-wrap large" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Notice)</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">编号：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Lineno, new { @class = "m-wrap small" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Lineno)</span>
+                </div>
+            </div>
+            @*<div class="control-group">
+                <label class="control-label"><span class="required">*</span>简介：</label>
+                <div class="controls">
+                    <textarea cols="200" id="Content" name="Content" rows="1"></textarea>
+                    <script>
+                        CKEDITOR.replace( 'Content',
+                        {
+                            toolbar :
+                            [
+                               ['TextColor']
+                            ],
+                            height: 50
+                        }
+                        );
+
+                    </script>
+                </div>
+            </div>*@
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>价格：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Price, new { @class = "m-wrap small" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Price)</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>队伍人数：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Playercount, new { @class = "m-wrap small" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Playercount)</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>支付名额：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Paycount, new { @class = "m-wrap small" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Paycount)</span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label">URL：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Url, new { @class = "m-wrap small" })
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>标识点数：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Pointscount, new { @class = "m-wrap small" })
+                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Pointscount)</span>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">总结：</label>
+                <div class="controls">
+                    @Html.TextBoxFor(m => m.Summary, new { @class = "m-wrap large" })
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">线路属性：</label>
+                <div class="controls">
+                    <select id="optStatus" name="optStatus" data-placeholder="请选择状态" class="m-wrap small">
+                        @Html.Raw(ViewBag.Status)
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script type="text/javascript" src="@Url.Content("~/scripts/js/selector/jquery-1.10.js")"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#match_id").hide();
+        $("#lineid").hide();
+        //限制字符个数
+        $(".Content").each(function () {
+            var maxwidth = 40;
+            if ($(this).text().length > maxwidth) {
+                $(this).text($(this).text().substring(0, maxwidth));
+                $(this).html($(this).html() + '...');
+            }
+           
+        });
+
+        $("#optMatch").change(function () {
+            var matchid = $("#optMatch").find("option:selected").val();
+            if (matchid != "") {
+                $("#match_id").hide();
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: encodeURI("/Main/Match/GetLineByMatch?matchid=" + matchid),
+                    data: {},
+                    dataType: "json",
+                    success: function (data) {
+                        if (data != "") {
+                            $("#optLine").empty();
+                            $.each(data, function (index, content) {
+                                $("#optLine").append("<option value='" + content.Value + "'>" + content.Text + "</option>");
+                            });
+                            //$("#optLine").trigger("chosen:updated");
+                        }
+                        else {
+                            $("#optLine").empty();
+                            // $("#optLine").trigger("chosen:updated");
+                        }
+                    }
+
+                });
+            } else {
+                $("#optLine").empty();
+            }
+
+        })
+
+        $("#optLine").change(function () {
+            var lineid = $("#optLine").find("option:selected").val();
+            if (lineid != "") {
+                $("#lineid").hide();
+            }
+        })
+    });
+</script>

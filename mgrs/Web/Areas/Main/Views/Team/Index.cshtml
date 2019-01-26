@@ -1,0 +1,222 @@
+﻿@using Utls;
+@using Model;
+@using Web;
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model PagedList<tblteamsVew>
+
+<div class="row-fluid">
+    <div class="span1">
+            <div>
+                <a class="btn red" id="delete" href="javascript:;">
+                    <i class="icon-trash icon-white">
+                    </i>删除
+                </a>
+            </div>
+        </div>
+    <div class="span11">
+        @using (Html.BeginForm(null, null, null, FormMethod.Get, new { id = "search" }))
+        {
+            <div class="dataTables_filter">
+                <label>
+                    <button type="submit" class="btn">
+                        搜索 <i class="icon-search"></i>
+                        <input type="hidden" value="true" id="isQuery" name="isQuery" />
+                    </button>
+                    <button type="button" id="exportExcel" class="btn" onclick="export_Excel();">导出 <i class="icon-download"></i></button>
+                </label>
+                <label>
+                    <span>是否邀请：</span>
+                    <select id="optiscoupon" name="optiscoupon" class="m-wrap small" style="width:90px">
+                        <option value="">-全部-</option>
+                        @Html.Raw(ViewBag.optiscoupon)
+                    </select>
+                </label>
+                <label>
+                    <span>来源：</span>
+                    <select id="optType" name="optType" class="m-wrap small" style="width:90px">
+                        <option value="">-全部-</option>
+                        @Html.Raw(ViewBag.optType)
+                    </select>
+                </label>
+                <label>
+                    <span>状态：</span>
+                    <select id="optStatus" name="optStatus" class="m-wrap small" style="width:90px">
+                        <option value="">-全部-</option>
+                        @Html.Raw(ViewBag.optStatus)
+                    </select>
+                </label>
+                <label>
+                    <span>电话：</span>
+                    @Html.TextBox("phone", null, new { @class = "m-wrap small" })
+                </label>
+                <label>
+                    <span>公司：</span>
+                    @Html.TextBox("company", null, new { @class = "m-wrap small" })
+                </label>
+                <label>
+                    <span>队伍：</span>
+                    @Html.TextBox("teamname", null, new { @class = "m-wrap small" })
+                </label>
+                <label>
+                    <span>路线：</span>
+                    @Html.TextBox("linename", null, new { @class = "m-wrap small" })
+                </label>
+                <label>
+                    <span>赛事：</span>
+                    @Html.TextBox("matchname", null, new { @class = "m-wrap small" })
+                </label>
+            </div>
+        }
+    </div>
+</div>
+@*
+    <div class="alert">
+        <button class="close" data-dismiss="alert"></button>
+        <strong>用户权限相关：</strong>
+        请编辑其所属角色的权限，用户的权限是其所有角色所拥有的权限汇总！
+    </div>*@
+@using (Html.BeginForm("Delete", "Team", FormMethod.Post, new { id = "mainForm" }))
+{
+    <table class="table table-striped table-hover ">
+        <thead>
+            <tr>
+                <th style="width: 8px;">
+                    <input type="checkbox" id="checkall" class="group-checkable" />
+                </th>
+                <th>
+                    赛事名称
+                </th>
+                <th>
+                   队伍名称
+                </th>
+                <th>
+                    队伍编号
+                </th>
+                <th>
+                    创建人电话
+                </th>
+                <th>
+                    所属公司
+                </th>
+                <th>
+                    路线类型
+                </th>
+                <th>
+                    线路名称
+                </th>
+                <th>
+                    创建时间
+                </th>
+                <th>
+                    是否邀请
+                </th>
+                <th>
+                    状态
+                </th>
+
+                <th>
+                    来源
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in Model)
+            {
+                <tr>
+                    <td>
+                        <input type="checkbox" class="checkboxes" name='ids' value='@m.teamid' />
+                    </td>
+                    <td>
+                        @m.matchname
+                    </td>
+                    <td>
+                        <a class=" mini purple thickbox"  href="@Url.Action("TeamUsers", new { matchid = m.match_id,teamid = m.teamid })?TB_iframe=true&height=520&width=500">
+                            @m.Teamname
+                        </a>
+                    </td>
+                    <td>
+                        @m.Teamno
+                    </td>
+                    <td>
+                        @m.Moblie
+                    </td>
+                    <td>
+                        @m.CompanyText
+                    </td>
+                    <td>
+                        @m.Linename
+                    </td>
+                    <td>
+                        @m.Linesname
+                    </td>
+                    <td>
+                        @m.Createtime
+                    </td>
+                    <td>
+                        @foreach (var item in ViewData["Iscoupon"] as List<SelectListItem>)
+                        {
+                            if (item.Value == m.iscoupon.ToString())
+                            {
+                                @item.Text
+                            }
+                        }
+                    </td>
+                    <td>
+                        <a class="mini purple thickbox" title='更新队伍状态' href="@Url.Action("TeamUpsts", new { teamid = m.teamid })&TB_iframe=true&height=320&width=400">
+                            @foreach (var item in ViewData["Status"] as List<SelectListItem>)
+                            {
+                                if (item.Value == m.Status.ToString())
+                                {
+                                    @item.Text
+                                }
+                            }
+                        </a>
+                    </td>
+                    <td>
+                        <a class="mini" title='查看订单详情' href="@Url.Action("Index", "Order", new { teamid = m.teamid })" target="_self">
+                            @foreach (var item in ViewData["TeamType"] as List<SelectListItem>)
+                            {
+                                if (item.Value == m.Type_.ToString())
+                                {
+                                    @item.Text
+                                }
+                            }
+                        </a>
+                    </td>
+                    <td>
+                        <a class="btn mini purple thickbox" title='编辑队伍资料' href="@Url.Action("Edit", new { id = m.teamid })?TB_iframe=true&height=520&width=500">
+                            <i class="icon-edit"></i>编辑
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<div class="dataTables_paginate paging_bootstrap pagination">
+    @Html.Pager(Model, new PagerOptions() { ShowTotalItemCount = true })
+</div>
+<script type="text/javascript">
+    function export_Excel() {
+        var matchname_ = $("#matchname").val();
+        var teamname_ = $("#teamname").val();
+        var status_ = $("#optStatus").find("option:selected").val();
+        $.ajax({
+            type: "POST",
+            url: encodeURI("/Team/ExpToExcel?matchname=" + matchname_ + "&teamname=" + teamname_ + "&status=" + status_),
+            data: {},
+            dataType: "text",
+            success: function (data) {
+                if (data != "") {
+                    window.open("http://mgrs.chengshidingxiang.com/data/" + data);
+                } else {
+                    alert("导出失败！");
+                }
+            }
+        });
+    }
+</script>

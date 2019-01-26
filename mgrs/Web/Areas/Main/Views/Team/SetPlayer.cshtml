@@ -1,0 +1,47 @@
+﻿@using Model;
+@using BLL;
+@using Web;
+
+@model List<tblmatchusers>
+
+@{
+    ViewBag.Title = "SetPlayer";
+    Layout = "~/Views/Shared/_Layout.View.cshtml";
+}
+
+@section MainContent{
+    <div class="portlet-body form-horizontal form-bordered form-row-stripped">
+        <div class="row-fluid">
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>队伍名称：</label>
+                <div class="controls">
+                    <label class="m-wrap large">@Model[0].Teamname</label>
+                </div>
+            </div>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <div class="control-group">
+
+                    @if (Model[i].Leader == 1)
+                    {
+                        <label class="control-label">队长：</label>
+                        <div class="controls">
+                            <label class="m-wrap large">@Model[i].Nickname &nbsp;&nbsp;&nbsp;&nbsp;@Model[i].Mobile</label>
+                        </div>
+                    }
+                    else
+                    { 
+                        <label class="control-label">队员：</label>
+                        <div class="controls">
+                            <label class="m-wrap large">@Model[i].Nickname &nbsp;&nbsp;&nbsp;&nbsp;@Model[i].Mobile</label>
+
+                            <a class="btn mini purple thickbox" href="@Url.Action("TeamUsers", new { matchid = "",teamid = "" })?TB_iframe=true&height=520&width=500">替换</a>
+                            <a class="btn mini purple thickbox">设置队长</a>
+                        </div>
+                    }
+                </div>
+            }
+
+        </div>
+    </div>
+}

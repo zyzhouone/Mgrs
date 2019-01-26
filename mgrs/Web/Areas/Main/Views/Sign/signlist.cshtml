@@ -1,0 +1,146 @@
+﻿@using Utls;
+@using Model;
+@using Web;
+@{
+    ViewBag.Title = "";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model PagedList<tblSignVew>
+
+@{
+    ViewBag.Title = "signlist";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row-fluid">
+    <div class="span1">
+        
+    </div>
+    <div class="span11">
+        @using (Html.BeginForm(null, null, null, FormMethod.Get, new { id = "search" }))
+        {
+            <div class="dataTables_filter">
+                <label>
+                    <button type="submit" class="btn">
+                        搜索 <i class="icon-search"></i>
+                    </button>
+                    <button type="button" id="exportExcel" class="btn" onclick="export_Excel();">导出 <i class="icon-download"></i></button>
+                </label>
+                <label>
+                    <span>队员：</span>
+                    @Html.TextBox("nickname", null, new { @class = "m-wrap small" })
+                </label>
+                <label>
+                    <span>队伍：</span>
+                    @Html.TextBox("teamname", null, new { @class = "m-wrap small" })
+                </label>
+                <label>
+                    <span>路线：</span>
+                    @Html.TextBox("linename", null, new { @class = "m-wrap small" })
+                </label>
+                <label>
+                    <span>赛事：</span>
+                    @Html.TextBox("matchname", null, new { @class = "m-wrap small" })
+                </label>
+            </div>
+        }
+    </div>
+</div>
+@*
+    <div class="alert">
+        <button class="close" data-dismiss="alert"></button>
+        <strong>用户权限相关：</strong>
+        请编辑其所属角色的权限，用户的权限是其所有角色所拥有的权限汇总！
+    </div>*@
+@using (Html.BeginForm("Delete", "Team", FormMethod.Post, new { id = "mainForm" }))
+{
+    <table class="table table-striped table-hover ">
+        <thead>
+            <tr>
+                @*<th style="width: 8px;">
+                    <input type="checkbox" id="checkall" class="group-checkable" />
+                </th>*@
+                <th>
+                    赛事名称
+                </th>
+                <th>
+                    路线名称
+                </th>
+                <th>
+                    队伍名称
+                </th>
+                <th>
+                    签到队员
+                </th>
+                <th>
+                    手机号
+                </th>
+                <th>
+                    签到时间
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in Model)
+            {
+                <tr>
+                    @*<td>
+                        <input type="checkbox" class="checkboxes" name='ids' value='@m.teamid' />
+                    </td>*@
+                    <td>
+                        @m.match_name
+                    </td>
+                    <td>
+                        @m.Linename
+                    </td>
+                    <td>
+                        @m.Teamname
+                    </td>
+                    <td>
+                        @m.Name
+                    </td>
+                    <td>
+                        @m.Mobile
+                    </td>
+                    <td>
+                        @m.dtime.Value.ToString("yyyy-MM-dd HH:mm:ss")
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<div class="dataTables_paginate paging_bootstrap pagination">
+    @Html.Pager(Model, new PagerOptions() { ShowTotalItemCount = true })
+</div>
+
+
+<script type="text/javascript">
+    function export_Excel() {
+        var matchname_ = $("#matchname").val();
+        var teamname_ = $("#teamname").val();
+        var linename = $("#linename").val();
+        var nickname = $("#nickname").val();
+
+        $.ajax({
+            type: "POST",
+            url: encodeURI("Main/Sign/ExpToExcel?matchname=" + matchname_ + "&teamname=" + teamname_ + "&linename=" + linename + "&nickname=" + nickname),
+            data: {},
+            dataType: "text",
+            success: function (data) {
+                if (data != "") {
+                    //window.open("http://mgrs.chengshidingxiang.com/data/" + data);
+
+                    // window.open("http://139.196.107.169:8000/" + data);
+
+                    window.open("http://localhost:64682/" + data);
+                } else {
+                    alert("导出失败！");
+                }
+            }
+        });
+    }
+
+
+</script>
