@@ -13,6 +13,10 @@ using System.Text;
 using System.Data;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
+using System.Net;
+using System.Configuration;
+using Web.Areas.Main.Models;
+using Newtonsoft.Json;
 
 namespace Web.Areas.Main.Controllers
 {
@@ -434,6 +438,7 @@ namespace Web.Areas.Main.Controllers
             try
             {
                 bll.AddLine(model);
+
             }
             catch (ValidException ex)
             {
@@ -736,6 +741,18 @@ namespace Web.Areas.Main.Controllers
             try
             {
                 bll.AddLines(model);
+
+                //zzy 2019-01-31 调用接口同步库存
+                WebClient MyWebClient = new WebClient();
+                string strUrl = string.Format(ConfigurationManager.AppSettings.Get("api_url") + "/redis/init?linesId={0}&inventory={1}", model.Linesid, model.Paycount);
+
+                MyWebClient.Credentials = CredentialCache.DefaultCredentials;
+                byte[] pageData = MyWebClient.DownloadData(strUrl);
+
+
+                String strJson = Encoding.UTF8.GetString(pageData) ?? "";
+                ResponseModel rb = JsonConvert.DeserializeObject<ResponseModel>(strJson);
+              
             }
             catch (ValidException ex)
             {
