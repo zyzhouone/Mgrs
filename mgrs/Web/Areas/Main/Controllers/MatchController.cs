@@ -743,15 +743,37 @@ namespace Web.Areas.Main.Controllers
                 bll.AddLines(model);
 
                 //zzy 2019-01-31 调用接口同步库存
-                WebClient MyWebClient = new WebClient();
-                string strUrl = string.Format(ConfigurationManager.AppSettings.Get("api_url") + "/redis/init?linesId={0}&inventory={1}", model.Linesid, model.Paycount);
+                //WebClient MyWebClient = new WebClient(); ConfigurationManager.AppSettings.Get("api_url")
+                string strUrl = string.Format("linesId={0}&inventory={1}", model.Linesid, model.Paycount);
+                byte[] byteArray = Encoding.UTF8.GetBytes(strUrl);
+                string url = ConfigurationManager.AppSettings.Get("api_url")+"/redis/init";
+                
+                //MyWebClient.Credentials = CredentialCache.DefaultCredentials;
+                //byte[] pageData = MyWebClient.DownloadData(strUrl);
 
-                MyWebClient.Credentials = CredentialCache.DefaultCredentials;
-                byte[] pageData = MyWebClient.DownloadData(strUrl);
+                //pang start 
+                HttpWebRequest webReq = (HttpWebRequest)WebRequest.Create(new Uri(url));
+                webReq.Method = "POST";
+                webReq.ContentType = "application/x-www-form-urlencoded";
+                webReq.ContentLength = byteArray.Length;
+
+                Stream newStream = webReq.GetRequestStream();
+                newStream.Write(byteArray, 0, byteArray.Length);
+                newStream.Close();
 
 
-                String strJson = Encoding.UTF8.GetString(pageData) ?? "";
-                ResponseModel rb = JsonConvert.DeserializeObject<ResponseModel>(strJson);
+                HttpWebResponse response = (HttpWebResponse)webReq.GetResponse();
+                StreamReader sr = new StreamReader(response.GetResponseStream(), Encoding.Default);
+                string Message = sr.ReadToEnd();
+                ResponseModel rb = Newtonsoft.Json.JsonConvert.DeserializeObject<ResponseModel>(Message);
+                if (rb.status != 0)
+                {
+                    return Alert("同步失败");
+
+                }
+                // end
+                //String strJson = Encoding.UTF8.GetString(pageData) ?? "";
+                //ResponseModel rb = JsonConvert.DeserializeObject<ResponseModel>(strJson);
               
             }
             catch (ValidException ex)
