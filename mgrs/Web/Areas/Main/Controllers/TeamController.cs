@@ -164,17 +164,22 @@ namespace Web.Areas.Main.Controllers
             var strMsg = "";
             try
             {
-                string[] mobileList = mobiles.Split(',');
-                foreach (string mobile in mobileList)
-                {
-                    if (!string.IsNullOrEmpty(mobile))
-                    {
-                        SMSResponse response = SMSHepler.SendCommonSms(mobile, strSendMsg);
+                //string[] mobileList = mobiles.Split(',');
+                //foreach (string mobile in mobileList)
+                //{
+                //    if (!string.IsNullOrEmpty(mobile))
+                //    {
+                //        SMSResponse response = SMSHepler.SendBatchCommonSms(mobile, strSendMsg);
                       
 
-                    }
+                //    }
+                //}
+                mobiles = mobiles.Remove(mobiles.Length-1);
+                SMSResponse response = SMSHepler.SendBatchCommonSms(mobiles, strSendMsg);
+                if(response.error!="0")
+                {
+                    strMsg = "发送错误" + response.error;
                 }
-
             }
             catch (ValidException ex)
             {

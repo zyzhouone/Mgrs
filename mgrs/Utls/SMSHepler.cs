@@ -20,6 +20,7 @@ namespace Utls
         private static string username = "api";//"sh_moa@163.com";
         private static string password = "key-6121bb0475c35f8cc902a69c66a94393";
         private static string url = "http://sms-api.luosimao.com/v1/send.json";
+        private static string url2 = "http://sms-api.luosimao.com/v1/send_batch.json";
 
         /// <summary>
         /// 发送用户注册码
@@ -61,6 +62,37 @@ namespace Utls
         {
             byte[] byteArray = Encoding.UTF8.GetBytes("mobile=" + mobile + "&message=" + message);
             HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(url));
+            string auth = "Basic " + Convert.ToBase64String(System.Text.Encoding.Default.GetBytes(username + ":" + password));
+            webRequest.Headers.Add("Authorization", auth);
+            webRequest.Method = "POST";
+            webRequest.ContentType = "application/x-www-form-urlencoded";
+            webRequest.ContentLength = byteArray.Length;
+
+            Stream newStream = webRequest.GetRequestStream();
+            newStream.Write(byteArray, 0, byteArray.Length);
+            newStream.Close();
+
+            HttpWebResponse response = (HttpWebResponse)webRequest.GetResponse();
+            StreamReader php = new StreamReader(response.GetResponseStream(), Encoding.Default);
+            string Message = php.ReadToEnd();
+            return Newtonsoft.Json.JsonConvert.DeserializeObject<SMSResponse>(Message);
+        }
+
+        /// <summary>
+        /// zzy 2019-02-24 批量发送短信
+        /// </summary>
+        /// <param name="mobile"></param>
+        /// <param name="msg"></param>
+        /// <returns></returns>
+        public static SMSResponse SendBatchCommonSms(string mobiles, string msg)
+        {
+            string message = string.Format("{0}【中国坐标】", msg);
+            return SendBacchSms(mobiles, message);
+        }
+        private static SMSResponse SendBacchSms(string mobiles, string message)
+        {
+            byte[] byteArray = Encoding.UTF8.GetBytes("mobile_list=" + mobiles + "&message=" + message);
+            HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(new Uri(url2));
             string auth = "Basic " + Convert.ToBase64String(System.Text.Encoding.Default.GetBytes(username + ":" + password));
             webRequest.Headers.Add("Authorization", auth);
             webRequest.Method = "POST";
