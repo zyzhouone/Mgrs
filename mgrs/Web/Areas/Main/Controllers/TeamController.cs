@@ -150,6 +150,40 @@ namespace Web.Areas.Main.Controllers
             return file;
         }
 
+
+        /// <summary>
+        /// zzy 2019-02-24
+        /// 发送短信
+        /// </summary>
+        /// <param name="matchid"></param>
+        /// <param name="teamid"></param>
+        /// <returns></returns>
+        public string TeamSendMsg(string mobiles,string strSendMsg)
+        {
+            var bll = new TeamBll();
+            var strMsg = "";
+            try
+            {
+                string[] mobileList = mobiles.Split(',');
+                foreach (string mobile in mobileList)
+                {
+                    if (!string.IsNullOrEmpty(mobile))
+                    {
+                        SMSResponse response = SMSHepler.SendCommonSms(mobile, strSendMsg);
+                      
+
+                    }
+                }
+
+            }
+            catch (ValidException ex)
+            {
+                strMsg = ex.Message;
+            }
+
+            return strMsg;
+        }
+
         public static string GridToExcelByNPOI(DataTable dt, string strExcelFileName)
         {
             try

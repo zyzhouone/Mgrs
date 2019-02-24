@@ -8,11 +8,16 @@
 @model PagedList<tblteamsVew>
 
 <div class="row-fluid">
-    <div class="span1">
+    <div class="span4">
             <div>
                 <a class="btn red" id="delete" href="javascript:;">
                     <i class="icon-trash icon-white">
                     </i>删除
+                </a>
+
+                <a class="btn blue" id="send" onclick="ShowSendMsg()" href="javascript:;">
+                    <i>
+                    </i>发送短信
                 </a>
             </div>
         </div>
@@ -80,7 +85,7 @@
     </div>*@
 @using (Html.BeginForm("Delete", "Team", FormMethod.Post, new { id = "mainForm" }))
 {
-    <table class="table table-striped table-hover ">
+    <table class="table table-striped table-hover " id="tbTeam">
         <thead>
             <tr>
                 <th style="width: 8px;">
@@ -90,7 +95,7 @@
                     赛事名称
                 </th>
                 <th>
-                   队伍名称
+                    队伍名称
                 </th>
                 <th>
                     队伍编号
@@ -134,7 +139,7 @@
                         @m.matchname
                     </td>
                     <td>
-                        <a class=" mini purple thickbox"  href="@Url.Action("TeamUsers", new { matchid = m.match_id,teamid = m.teamid })?TB_iframe=true&height=520&width=500">
+                        <a class=" mini purple thickbox" href="@Url.Action("TeamUsers", new { matchid = m.match_id,teamid = m.teamid })?TB_iframe=true&height=520&width=500">
                             @m.Teamname
                         </a>
                     </td>
@@ -200,23 +205,115 @@
 <div class="dataTables_paginate paging_bootstrap pagination">
     @Html.Pager(Model, new PagerOptions() { ShowTotalItemCount = true })
 </div>
-<script type="text/javascript">
-    function export_Excel() {
-        var matchname_ = $("#matchname").val();
-        var teamname_ = $("#teamname").val();
-        var status_ = $("#optStatus").find("option:selected").val();
-        $.ajax({
-            type: "POST",
-            url: encodeURI("/Team/ExpToExcel?matchname=" + matchname_ + "&teamname=" + teamname_ + "&status=" + status_),
-            data: {},
-            dataType: "text",
-            success: function (data) {
-                if (data != "") {
-                    window.open("http://mgrs.chengshidingxiang.com/data/" + data);
-                } else {
-                    alert("导出失败！");
+
+
+<div id="TB_overlayBG2" style=" display:none; position: fixed; z-index: 100; top: 0px; left: 0px; height: 100%; width: 100%; " class="TB_overlayBG"></div>
+<div id="TB_window2" style="position: fixed;
+    background: #ffffff;
+    z-index: 102;
+    color: #000000;
+    display: none;
+    border: 4px solid #525252;
+    text-align: left;
+    top: 50%;
+    min-height:300px;
+    left: 50%;margin-left: -265px; width: 530px; margin-top: -280px; ">
+    <div id="TB_title">
+        <div id="TB_ajaxWindowTitle">发送短信</div>
+        <div id="TB_closeAjaxWindow">
+            <a href="#" id="TB_closeWindowButton" title="Close" onclick="CancelSendMsg()" style="color:#0c4857">点击关闭</a>
+        </div>
+    </div>
+    <div class="portlet-body form-horizontal form-bordered form-row-stripped">
+        <div class="row-fluid">
+
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>短信内容：</label>
+                <div class="controls">
+
+                    <textarea cols="50" rows="5" id="txtMsg" name="txtMsg"></textarea>
+                </div>
+            </div>
+            </div>
+        </div>
+            <div class="form-actions">
+
+                <button type="button" class="btn blue" onclick="SendMsg()"><i class="icon-ok"></i>发送</button>
+                <span id="submitloading" style="display:none;"><img src="/content/images/loading.gif"></span>
+                <button type="button" class="btn" id="cancel" onclick="CancelSendMsg()">取消</button>
+                <div class="validation-summary-valid" data-valmsg-summary="true">
+                    <ul>
+                        <li style="display:none"></li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+
+        <script type="text/javascript">
+            function export_Excel() {
+                var matchname_ = $("#matchname").val();
+                var teamname_ = $("#teamname").val();
+                var status_ = $("#optStatus").find("option:selected").val();
+                $.ajax({
+                    type: "POST",
+                    url: encodeURI("/Team/ExpToExcel?matchname=" + matchname_ + "&teamname=" + teamname_ + "&status=" + status_),
+                    data: {},
+                    dataType: "text",
+                    success: function (data) {
+                        if (data != "") {
+                            window.open("http://mgrs.chengshidingxiang.com/data/" + data);
+                        } else {
+                            alert("导出失败！");
+                        }
+                    }
+                });
+            }
+            function ShowSendMsg() {
+                $("#TB_overlayBG2").show();
+                $("#TB_window2").show();
+            }
+
+            function CancelSendMsg() {
+                $("#txtMsg").val();
+                $("#TB_overlayBG2").hide();
+                $("#TB_window2").hide();
+            }
+
+            function SendMsg()
+            {
+                if ($("input:checkbox[name='ids']:checked").length<=0) {
+                    alert("请选择队伍信息");
+                    return;
+                }
+                if ($("#txtMsg").val().trim() == "") {
+                    alert("短信内容不能空");
+                    return;
+                }
+                var message = "确定要发送吗?";
+                if (confirm(message)) {
+                    var mobiles = "";
+                    $("#tbTeam").find("tbody").find("tr").each(function () {
+                        var tdArr = $(this).children();
+                        var cbx = tdArr.eq(0).find("input").attr('checked');
+                        if (cbx) {
+                            mobiles += tdArr.eq(4).text().trim() + ",";
+                        }
+                    });
+                    alert(mobiles);
+                    $.ajax({
+                        type: "POST",
+                        url: encodeURI("/team/TeamSendMsg"),
+                        data: { "mobiles": mobiles, "strSendMsg": $("#txtMsg").val().trim() },
+                        success: function (data) {
+
+                            if (data == "") {
+                                alert("发送成功!");
+                                CancelSendMsg();
+                            } 
+                        }
+                    });
                 }
             }
-        });
-    }
-</script>
+        </script>
