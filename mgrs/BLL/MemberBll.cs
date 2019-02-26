@@ -19,18 +19,24 @@ namespace BLL
         /// <param name="tel"></param>
         /// <param name="pageindex"></param>
         /// <returns></returns>
-        public PagedList<tblusers> GetMembers(string id, string tel, int pageindex)
+        public PagedList<tblusers> GetMembers(string id, string tel,string nickName, int pageindex)
         {
             using (var db = new BFdbContext())
             {
                 StringBuilder sql = new StringBuilder();
-                sql.Append("SELECT a.* FROM tbl_users a WHERE 1=1");
+                sql.Append(@"SELECT a.*,w.nickName FROM tbl_users a 
+Left join wx_app_user w on a.userid=w.userid
+WHERE 1=1");
 
                 if (!string.IsNullOrEmpty(id))
                     sql.AppendFormat(" AND a.userid = {0}", id);
 
                 if (!string.IsNullOrEmpty(tel))
                     sql.AppendFormat(" AND a.mobile like '%{0}%'", tel);
+
+
+                if (!string.IsNullOrEmpty(nickName))
+                    sql.AppendFormat(" AND w.nickName like '%{0}%'", nickName);
 
 
                 return db.SqlQuery<tblusers, DateTime?>(sql.ToString(), pageindex, p => p.Last_Time);

@@ -94,5 +94,9 @@ namespace Model
         public int? Paycount
         { get; set; }
 
+
+        [Column("`canchange`")]
+        public int CanChange
+        { get; set; }
     }
 }

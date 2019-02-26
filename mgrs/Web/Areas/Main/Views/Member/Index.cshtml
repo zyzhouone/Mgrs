@@ -35,6 +35,10 @@
                     <span>电话：</span>
                     @Html.TextBox("tel", null, new { @class = "m-wrap small" })
                 </label>
+                <label>
+                    <span>微信名：</span>
+                    @Html.TextBox("nickName", null, new { @class = "m-wrap small" })
+                </label>
             </div>
         }
     </div>
@@ -73,6 +77,9 @@
                 </th>
                 <th>
                     最后登录
+                </th>
+                <th>
+                    微信名
                 </th>
                 <th>
                     状态
@@ -129,6 +136,9 @@
                     </td>
                     <td>
                         @m.Last_Time
+                    </td>
+                    <td>
+                        @m.NickName
                     </td>
                     <td>
                         @foreach (var item in ViewData["Status"] as List<SelectListItem>)

@@ -81,5 +81,10 @@ namespace Model
         [Column("`type`")]
         public string Type
         { get; set; }
+
+
+        [Column("`nickName`")]
+        public string NickName
+        { get; set; }
     }
 }

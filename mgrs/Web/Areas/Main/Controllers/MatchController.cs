@@ -202,6 +202,17 @@ namespace Web.Areas.Main.Controllers
                 else
                     ViewBag.Ispic += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
             }
+
+            if (model.Isfore == 1)
+            {
+                ViewBag.Isfore += "<option value='1' selected>分段支付</option>";
+                ViewBag.Isfore += "<option value='2'>立即支付</option>";
+            }
+            else
+            {
+                ViewBag.Isfore += "<option value='1'>分段支付</option>";
+                ViewBag.Isfore += "<option value='2' selected>立即支付</option>";
+            }
             return View(model);
         }
 
@@ -312,6 +323,7 @@ namespace Web.Areas.Main.Controllers
 
             model.Ispic = fc["optIspic"].ToString();
             model.Status = fc["optStatus"].ToString();
+            model.Isfore = Convert.ToInt32(fc["optIsfore"]);
             try
             {
                 bll.EditMatch(model, null);
@@ -628,6 +640,17 @@ namespace Web.Areas.Main.Controllers
                         }
                         
                 }
+
+                if (model.CanChange == 1)
+                {
+                    ViewBag.CanChange += "<option value='0' >否</option>";
+                    ViewBag.CanChange += "<option value='1' selected>是</option>";
+                }
+                else
+                {
+                    ViewBag.CanChange += "<option value='0' selected>否</option>";
+                    ViewBag.CanChange += "<option value='1'>是</option>";
+                }
             }
 
 
@@ -666,6 +689,8 @@ namespace Web.Areas.Main.Controllers
             model.Url = fc["Url"].ToString();
             model.Summary = fc["Summary"].ToString();
             model.Status = Int32.Parse(fc["optStatus"].ToString());
+
+            model.CanChange = Int32.Parse(fc["optCanChange"].ToString());
             try
             {
                 bll.EditLines(model);
@@ -784,6 +809,9 @@ namespace Web.Areas.Main.Controllers
 
             return this.RefreshParent();
         }
+
+
+        
 
         public ActionResult points(string id,int? pageIndex)
         {

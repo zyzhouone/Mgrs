@@ -91,6 +91,8 @@ namespace Model
         public string Notice
         { get; set; }
 
+        [Column("`isfore`")]
+        public int Isfore { get; set; }
     }
 }
 

@@ -17,12 +17,12 @@ namespace Web.Areas.Main.Controllers
         //
         // GET: /Main/Member/
 
-        public ActionResult Index(string id, string tel, int? pageIndex)
+        public ActionResult Index(string id, string tel,string nickName, int? pageIndex)
         {
             var members = new List<tblusers>();
             try
             {
-                members = new MemberBll().GetMembers(id, tel, pageIndex.GetValueOrDefault(1));
+                members = new MemberBll().GetMembers(id, tel, nickName, pageIndex.GetValueOrDefault(1));
                 List<SelectListItem> Status = new MemberBll().GetDict(6);
                 ViewData["Status"] = Status;
 
