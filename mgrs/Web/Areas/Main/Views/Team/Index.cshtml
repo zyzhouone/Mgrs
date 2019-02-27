@@ -36,7 +36,7 @@
                     <span>是否邀请：</span>
                     <select id="optiscoupon" name="optiscoupon" class="m-wrap small" style="width:90px">
                         <option value="">-全部-</option>
-                        @Html.Raw(ViewBag.optiscoupon)
+                        @Html.Raw(ViewBag.optteamtype)
                     </select>
                 </label>
                 <label>
@@ -162,9 +162,9 @@
                         @m.Createtime
                     </td>
                     <td>
-                        @foreach (var item in ViewData["Iscoupon"] as List<SelectListItem>)
+                        @foreach (var item in ViewData["TeamType"] as List<SelectListItem>)
                         {
-                            if (item.Value == m.iscoupon.ToString())
+                            if (item.Value == m.Teamtype.ToString())
                             {
                                 @item.Text
                             }
@@ -183,7 +183,7 @@
                     </td>
                     <td>
                         <a class="mini" title='查看订单详情' href="@Url.Action("Index", "Order", new { teamid = m.teamid })" target="_self">
-                            @foreach (var item in ViewData["TeamType"] as List<SelectListItem>)
+                            @foreach (var item in ViewData["Type_"] as List<SelectListItem>)
                             {
                                 if (item.Value == m.Type_.ToString())
                                 {

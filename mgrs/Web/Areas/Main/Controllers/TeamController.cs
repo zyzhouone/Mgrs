@@ -44,10 +44,10 @@ namespace Web.Areas.Main.Controllers
                         ViewBag.optStatus += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
                 }
 
-                List<SelectListItem> TeamType = new MemberBll().GetDict(12);
-                ViewData["TeamType"] = TeamType;
+                List<SelectListItem> Type_ = new MemberBll().GetDict(12);
+                ViewData["Type_"] = Type_;
 
-                foreach (SelectListItem r in TeamType)
+                foreach (SelectListItem r in Type_)
                 {
                     if (optType == r.Value)
                         ViewBag.optType += "<option value='" + r.Value.ToString() + "'selected>" + r.Text.ToString() + "</option>";
@@ -55,14 +55,22 @@ namespace Web.Areas.Main.Controllers
                         ViewBag.optType += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
                 }
 
-                List<SelectListItem> Iscoupon = new MemberBll().GetDict(13);
-                ViewData["Iscoupon"] = Iscoupon;
-                foreach (SelectListItem r in Iscoupon)
+                List<SelectListItem> TeamType = new  List<SelectListItem>();
+                SelectListItem item1=new SelectListItem();
+                item1.Text="是";
+                item1.Value="1";
+                TeamType.Add(item1);
+                SelectListItem item2=new SelectListItem();
+                item2.Text="否";
+                item2.Value="0";
+                TeamType.Add(item2);
+                ViewData["TeamType"] = TeamType;
+                foreach (SelectListItem r in TeamType)
                 {
                     if (optiscoupon == r.Value)
-                        ViewBag.optiscoupon += "<option value='" + r.Value.ToString() + "'selected>" + r.Text.ToString() + "</option>";
+                        ViewBag.optteamtype += "<option value='" + r.Value.ToString() + "'selected>" + r.Text.ToString() + "</option>";
                     else
-                        ViewBag.optiscoupon += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
+                        ViewBag.optteamtype += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
                 }
             }
             catch (Exception e)

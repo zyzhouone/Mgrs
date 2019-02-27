@@ -60,7 +60,7 @@ namespace BLL
                     sql.AppendFormat(" AND a.type_  = '{0}'", opttype);
 
                 if (!string.IsNullOrEmpty(optiscoupon))
-                    sql.AppendFormat(" AND a.iscoupon  = '{0}'", optiscoupon);
+                    sql.AppendFormat(" AND a.teamtype  = '{0}'", optiscoupon);
 
                 if (!string.IsNullOrEmpty(linename))
                     sql.AppendFormat(" AND a.linename  like '%{0}%'", linename.Trim());
