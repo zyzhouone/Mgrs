@@ -183,7 +183,7 @@ namespace Web.Areas.Main.Controllers
         {
             var bll = new MatchBll();
             var model = bll.GetMatchById(id);
-           // var otherPics = bll.GetOtherPics(id);
+            // var otherPics = bll.GetOtherPics(id);
             //ViewData["otherPics"] = otherPics;
             List<SelectListItem> Status = new MemberBll().GetDict(4);
             foreach (SelectListItem r in Status)
@@ -370,7 +370,8 @@ namespace Web.Areas.Main.Controllers
             try
             {
                 jr.Data = bll.TopMatch(id);
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 jr.Data = -1;
             }
@@ -492,7 +493,7 @@ namespace Web.Areas.Main.Controllers
         }
 
         [HttpPost]
-        public ActionResult LineEdit(string id,FormCollection fc)
+        public ActionResult LineEdit(string id, FormCollection fc)
         {
             var bll = new MatchBll();
             var model = bll.GetLineById(id);
@@ -638,7 +639,7 @@ namespace Web.Areas.Main.Controllers
                         {
                             ViewBag.Line += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
                         }
-                        
+
                 }
 
                 if (model.CanChange == 1)
@@ -676,14 +677,14 @@ namespace Web.Areas.Main.Controllers
             {
                 model.Paycount = Int32.Parse(fc["Paycount"].ToString().Trim());
             }
-            
+
             if (fc["Lineno"] != "")
             {
                 model.Lineno = fc["Lineno"].ToString().Trim();
             }
             model.Playercount = Int32.Parse(fc["Playercount"].ToString().Trim());
             model.Pointscount = Int32.Parse(fc["Pointscount"].ToString().Trim());
-           // model.Condition_Sex = Int32.Parse(fc["Condition_Sex"].ToString().Trim());
+            // model.Condition_Sex = Int32.Parse(fc["Condition_Sex"].ToString().Trim());
             //model.Condition_Age = Int32.Parse(fc["Condition_Age"].ToString().Trim());
             //model.Condition_Subline = Int32.Parse(fc["Condition_Subline"].ToString().Trim());
             model.Url = fc["Url"].ToString();
@@ -702,6 +703,60 @@ namespace Web.Areas.Main.Controllers
             }
 
             return this.RefreshParent();
+        }
+
+
+        public JsonResult InitInventory(string linesid, string Inventory)
+        {
+            JsonResult jr = new JsonResult();
+            ResponseModel rb = new ResponseModel();
+            try
+            {
+                WebClient MyWebClient = new WebClient();
+                string strUrl = ConfigurationManager.AppSettings.Get("api_url") + string.Format("/redis/init?linesId={0}&inventory={1}", linesid, Inventory);
+                byte[] byteArray = Encoding.UTF8.GetBytes(strUrl);
+
+
+                MyWebClient.Credentials = CredentialCache.DefaultCredentials;
+                byte[] pageData = MyWebClient.DownloadData(strUrl);
+
+                String strJson = Encoding.UTF8.GetString(pageData) ?? "";
+                rb = JsonConvert.DeserializeObject<ResponseModel>(strJson);
+
+            }
+            catch (Exception ex)
+            {
+                rb.status = -1;
+            }
+            jr.Data = rb;
+            return jr;
+        }
+
+        public JsonResult GetInventory(string linesid, string lines)
+        {
+            JsonResult jr = new JsonResult();
+            ResponseModel rb = new ResponseModel();
+            try
+            {
+                WebClient MyWebClient = new WebClient();
+                string strUrl = ConfigurationManager.AppSettings.Get("api_url") + string.Format("/redis/get?linesId={0}&lines={1}", linesid, lines);
+                byte[] byteArray = Encoding.UTF8.GetBytes(strUrl);
+
+
+                MyWebClient.Credentials = CredentialCache.DefaultCredentials;
+                byte[] pageData = MyWebClient.DownloadData(strUrl);
+
+                String strJson = Encoding.UTF8.GetString(pageData) ?? "";
+                rb = JsonConvert.DeserializeObject<ResponseModel>(strJson);
+                
+
+            }
+            catch (Exception ex)
+            {
+                rb.status = -1;
+            }
+            jr.Data = rb;
+            return jr;
         }
 
         public ActionResult LinesCreate()
@@ -754,7 +809,7 @@ namespace Web.Areas.Main.Controllers
             {
                 model.Pointscount = Int32.Parse(fc["Pointscount"].ToString().Trim());
             }
-            
+
             model.Price = fc["Price"].ToString().Trim();
             // model.Condition_Sex = Int32.Parse(fc["Condition_Sex"].ToString().Trim());
             //model.Condition_Age = Int32.Parse(fc["Condition_Age"].ToString().Trim());
@@ -771,8 +826,8 @@ namespace Web.Areas.Main.Controllers
                 //WebClient MyWebClient = new WebClient(); ConfigurationManager.AppSettings.Get("api_url")
                 string strUrl = string.Format("linesId={0}&inventory={1}", model.Linesid, model.Paycount);
                 byte[] byteArray = Encoding.UTF8.GetBytes(strUrl);
-                string url = ConfigurationManager.AppSettings.Get("api_url")+"/redis/init";
-                
+                string url = ConfigurationManager.AppSettings.Get("api_url") + "/redis/init";
+
                 //MyWebClient.Credentials = CredentialCache.DefaultCredentials;
                 //byte[] pageData = MyWebClient.DownloadData(strUrl);
 
@@ -799,7 +854,7 @@ namespace Web.Areas.Main.Controllers
                 // end
                 //String strJson = Encoding.UTF8.GetString(pageData) ?? "";
                 //ResponseModel rb = JsonConvert.DeserializeObject<ResponseModel>(strJson);
-              
+
             }
             catch (ValidException ex)
             {
@@ -811,16 +866,16 @@ namespace Web.Areas.Main.Controllers
         }
 
 
-        
 
-        public ActionResult points(string id,int? pageIndex)
+
+        public ActionResult points(string id, int? pageIndex)
         {
             var points = new List<tblpointsView>();
             try
             {
                 points = new MatchBll().GetPoints(id, pageIndex.GetValueOrDefault(1));
-                if(points!=null)
-                ViewBag.linesid = points[0].Lineguid;
+                if (points != null)
+                    ViewBag.linesid = points[0].Lineguid;
             }
             catch (Exception e)
             {
@@ -867,7 +922,7 @@ namespace Web.Areas.Main.Controllers
         }
 
         [HttpPost]
-         public ActionResult ckeditorUpload(HttpPostedFileBase upload, string CKEditorFuncNum, string CKEditor, string langCode)
+        public ActionResult ckeditorUpload(HttpPostedFileBase upload, string CKEditorFuncNum, string CKEditor, string langCode)
         {
             string filename = "";
             string path = Server.MapPath("~/UploadFiles/");
@@ -878,7 +933,7 @@ namespace Web.Areas.Main.Controllers
                 filename = file.FileName.Substring(file.FileName.LastIndexOf(".") + 1);
                 if ((filename.ToUpper() == "PNG" || filename.ToUpper() == "JPG") && file.ContentLength / 1024 < 2000)
                 {
-                   
+
                     filename = Guid.NewGuid().ToString() + "." + filename;
                     file.SaveAs(path + filename);
                 }
@@ -888,14 +943,14 @@ namespace Web.Areas.Main.Controllers
             var vMessage = string.Empty;
 
             var result = @"<html><body><script>window.parent.CKEDITOR.tools.callFunction(" + CKEditorFuncNum + ", \"" + imageUrl + "\", \"" + vMessage + "\");</script></body></html>";
- 
+
 
 
             return Content(result);
 
 
         }
-        
+
 
         public ActionResult PointsCreate(string id)
         {
@@ -978,7 +1033,7 @@ namespace Web.Areas.Main.Controllers
             var matchpics = new List<tblmatchpicsView>();
             try
             {
-                matchpics = new MatchBll().GetMatchPics(matchname,pageIndex.GetValueOrDefault(1));
+                matchpics = new MatchBll().GetMatchPics(matchname, pageIndex.GetValueOrDefault(1));
             }
             catch (Exception e)
             {
@@ -1021,7 +1076,7 @@ namespace Web.Areas.Main.Controllers
             var model = new tblmatchpics();
             model.Id = Guid.NewGuid().ToString();
             model.Match_id = fc["optMatch"].ToString();
-           
+
             string filename = "";
 
             HttpFileCollectionBase files = Request.Files;
@@ -1054,12 +1109,12 @@ namespace Web.Areas.Main.Controllers
         }
 
 
-        public ActionResult Coupon(string matchname, string teamname,string company, string mobile,string couponchar, string optType,string optStatus, int? pageIndex)
+        public ActionResult Coupon(string matchname, string teamname, string company, string mobile, string couponchar, string optType, string optStatus, int? pageIndex)
         {
             var coupon = new List<tblcouponView>();
             try
             {
-                coupon = new MatchBll().GetCoupons(matchname, teamname, company, mobile,couponchar, optType, optStatus, pageIndex.GetValueOrDefault(1));
+                coupon = new MatchBll().GetCoupons(matchname, teamname, company, mobile, couponchar, optType, optStatus, pageIndex.GetValueOrDefault(1));
                 List<SelectListItem> Status = new MemberBll().GetDict(11);
                 ViewData["Status"] = Status;
                 foreach (SelectListItem r in Status)
@@ -1091,7 +1146,7 @@ namespace Web.Areas.Main.Controllers
         public string ExpCoupon(string matchname, string teamname, string company, string mobile, string couponchar, string optType, string optStatus)
         {
             List<tblcouponView> o = new MatchBll().GetCoupons(matchname, teamname, company, mobile, couponchar, optType, optStatus);
-          
+
             string ExportField = "Teamname,Nickname,Company,Mobile,Couponchar,Lines_name,Usedtime,Type,Status";
             string[] fields = ExportField.Split(',');
             DataTable dt = new DataTable();

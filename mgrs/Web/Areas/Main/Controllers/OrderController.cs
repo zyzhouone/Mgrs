@@ -22,10 +22,13 @@ namespace Web.Areas.Main.Controllers
         public ActionResult Index(string matchname,string teamid,string teamname, string mobile, string optStatus, string optTeamType, string optOrderBy, int? pageIndex)
         {
 
-            var orders = new List<tblordersView>();
+            PagedList<tblordersView> orders = null;
             try
             {
-                orders = new OrderBll().GetOrders(matchname,teamid, teamname, mobile, optStatus, optTeamType, optOrderBy, pageIndex.GetValueOrDefault(1));
+                if (optStatus != null)
+                {
+                    orders = new OrderBll().GetOrders(matchname, teamid, teamname, mobile, optStatus, optTeamType, optOrderBy, pageIndex.GetValueOrDefault(1));
+                }
                 List<SelectListItem> Status = new MemberBll().GetDict(7);
                 ViewData["Status"] = Status;
 

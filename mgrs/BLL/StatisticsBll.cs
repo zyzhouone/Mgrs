@@ -28,8 +28,9 @@ namespace BLL
 
                 if (!string.IsNullOrEmpty(status))
                     sql.AppendFormat(" AND t.status = '{0}'", status);
-
+                
                 sql.AppendFormat(" group by l.lines_id ");
+                sql.AppendFormat(" ORDER BY l.linename ");
 
                 return db.SqlQuery<signupView>(sql.ToString()).ToList();
             }

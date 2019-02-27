@@ -60,5 +60,6 @@ namespace Model
         public DateTime? Paytime
         { get; set; }
 
+        public string Paytype { get; set; }
     }
 }

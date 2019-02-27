@@ -144,8 +144,12 @@
                     @Html.TextBoxFor(m => m.Paycount, new { @class = "m-wrap small" })
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.Paycount)</span>
                     <br />
-                    <div id="divInv">
-                        <button type="button" class="btn blue"><i class="icon-ok"></i>库存设定</button>
+                    <div id="divInv" style="padding-top:10px;">
+                        <button type="button" class="btn blue" onclick="GetInventory()"><i class="icon-ok"></i>库存设定</button>
+
+                        <div>
+                            <span>当前库存：</span><input type="number" id="txtRedisNum" />
+                            </div>
                     </div>
                 </div>
             </div>
@@ -245,4 +249,23 @@
             }
         })
     });
+
+    //库存设定
+    function GetInventory() {
+
+        $.ajax({
+            type: "Post",
+            contentType: "application/json",
+            url: "/match/GetInventory?linesid=@Model.Lineid&lines=@Model.Linename",
+            dataType: "json",
+            success: function (data) {
+                alert(data.keys())
+                if (data.status == 0) {
+                    $("#txtRedisNum").val(data.data.keyList[0]);
+                } else {
+                    alert("置顶失败")
+                }
+            }
+        });
+    }
 </script>

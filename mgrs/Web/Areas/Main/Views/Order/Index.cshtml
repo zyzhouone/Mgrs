@@ -87,6 +87,7 @@
                 <th>
                     支付时间
                 </th>
+                <th>支付类型</th>
                 <th>
                     状态
                 </th>
@@ -94,7 +95,9 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var m in Model)
+            @if(Model!=null)
+            { 
+                foreach (var m in Model)
             {
                 <tr>
                     <td>
@@ -122,6 +125,9 @@
                         @m.Paytime
                     </td>
                     <td>
+                        @m.Paytype
+                    </td>
+                    <td>
                         @foreach (var item in ViewData["Status"] as List<SelectListItem>)
                         {
                             if (item.Value == m.OrderStatus.ToString())
@@ -144,6 +150,7 @@
                         }
                     </td>
                 </tr>
+            }
             }
         </tbody>
     </table>
