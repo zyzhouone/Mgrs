@@ -83,8 +83,5 @@ namespace Model
         { get; set; }
 
 
-        [Column("`nickName`")]
-        public string NickName
-        { get; set; }
     }
 }

@@ -19,7 +19,7 @@ namespace BLL
         /// <param name="tel"></param>
         /// <param name="pageindex"></param>
         /// <returns></returns>
-        public PagedList<tblusers> GetMembers(string id, string tel,string nickName, int pageindex)
+        public PagedList<tblusersView> GetMembers(string id, string tel,string nickName, int pageindex)
         {
             using (var db = new BFdbContext())
             {
@@ -39,7 +39,7 @@ WHERE 1=1");
                     sql.AppendFormat(" AND w.nickName like '%{0}%'", nickName);
 
 
-                return db.SqlQuery<tblusers, DateTime?>(sql.ToString(), pageindex, p => p.Last_Time);
+                return db.SqlQuery<tblusersView, DateTime?>(sql.ToString(), pageindex, p => p.Last_Time);
             }
         }
 

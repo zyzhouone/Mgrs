@@ -114,6 +114,7 @@
     <Compile Include="tbltlcomment.cs" />
     <Compile Include="tbltmpuserinfo.cs" />
     <Compile Include="tblusers.cs" />
+    <Compile Include="tblusersView.cs" />
     <Compile Include="tbl_match_pics.cs" />
     <Compile Include="teamfenzu.cs" />
     <Compile Include="usergroup.cs" />

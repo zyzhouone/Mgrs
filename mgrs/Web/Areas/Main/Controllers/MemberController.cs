@@ -19,7 +19,7 @@ namespace Web.Areas.Main.Controllers
 
         public ActionResult Index(string id, string tel,string nickName, int? pageIndex)
         {
-            var members = new List<tblusers>();
+            var members = new List<tblusersView>();
             try
             {
                 members = new MemberBll().GetMembers(id, tel, nickName, pageIndex.GetValueOrDefault(1));

@@ -32,8 +32,8 @@
 }
 
 @section MainContent{
-<script type="text/javascript" src="@Url.Content("~/scripts/js/selector/jquery-1.10.js")"></script>
-<script type="text/javascript" src="@Url.Content("~/Assets/ckeditor/ckeditor.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/scripts/js/selector/jquery-1.10.js")"></script>
+    <script type="text/javascript" src="@Url.Content("~/Assets/ckeditor/ckeditor.js")"></script>
     <div class="portlet-body form-horizontal form-bordered form-row-stripped">
         <div class="row-fluid">
             <input id="id" type="hidden" value="@Model.Linesid" />
@@ -80,7 +80,7 @@
                     @Html.TextBoxFor(m => m.Content, new { @class = "m-wrap large" })
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.Content)</span>
 
-                  
+
                 </div>
             </div>
 
@@ -88,7 +88,7 @@
                 <label class="control-label">须知：</label>
                 <div class="controls">
                     @*@Html.TextBoxFor(m => m.Notice, new { @class = "m-wrap large" })
-                    <span class="help-inline">@Html.ValidationMessageFor(m => m.Notice)</span>*@
+                        <span class="help-inline">@Html.ValidationMessageFor(m => m.Notice)</span>*@
                     <textarea cols="200" id="Notice" name="Notice" rows="10">@Model.Notice</textarea>
                     <script>
                         CKEDITOR.replace('Notice'
@@ -106,23 +106,23 @@
                 </div>
             </div>
             @*<div class="control-group">
-                <label class="control-label"><span class="required">*</span>简介：</label>
-                <div class="controls">
-                    <textarea cols="200" id="Content" name="Content" rows="1">@Model.Content</textarea>
-                    <script>
-                        CKEDITOR.replace('Content',
-                        {
-                            toolbar:
-                            [
-                               ['TextColor']
-                            ],
-                            height: 50
-                        }
-                        );
+                    <label class="control-label"><span class="required">*</span>简介：</label>
+                    <div class="controls">
+                        <textarea cols="200" id="Content" name="Content" rows="1">@Model.Content</textarea>
+                        <script>
+                            CKEDITOR.replace('Content',
+                            {
+                                toolbar:
+                                [
+                                   ['TextColor']
+                                ],
+                                height: 50
+                            }
+                            );
 
-                    </script>
-                </div>
-            </div>*@
+                        </script>
+                    </div>
+                </div>*@
 
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>价格：</label>
@@ -145,11 +145,11 @@
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.Paycount)</span>
                     <br />
                     <div id="divInv" style="padding-top:10px;">
-                        <button type="button" class="btn blue" onclick="GetInventory()"><i class="icon-ok"></i>库存设定</button>
-
+                       
                         <div>
-                            <span>当前库存：</span><input type="number" id="txtRedisNum" />
-                            </div>
+                            <span>库存：</span><input type="number" id="txtRedisNum" />
+                            <button type="button" class="btn blue" onclick="SetInventory()"><i class="icon-ok"></i>设置库存</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -200,6 +200,8 @@
 
 <script>
     $(document).ready(function () {
+        GetInventory();
+
         $("#match_id").hide();
         $("#lineid").hide();
         //限制字符个数
@@ -231,7 +233,7 @@
                         }
                         else {
                             $("#optLine").empty();
-                           // $("#optLine").trigger("chosen:updated");
+                            // $("#optLine").trigger("chosen:updated");
                         }
                     }
 
@@ -256,14 +258,41 @@
         $.ajax({
             type: "Post",
             contentType: "application/json",
-            url: "/match/GetInventory?linesid=@Model.Lineid&lines=@Model.Linename",
+            url: "/match/GetInventory?lines=@Model.Lineid",
             dataType: "json",
             success: function (data) {
-                alert(data.keys())
+
                 if (data.status == 0) {
-                    $("#txtRedisNum").val(data.data.keyList[0]);
+                   
+                    $("#txtRedisNum").val(data.data.valueList[0]);
+                    
                 } else {
-                    alert("置顶失败")
+                    alert("失败")
+                }
+            }
+        });
+    }
+
+
+    function SetInventory() {
+
+        if ($("#txtRedisNum").val().trim() == "") {
+            alert("请输入库存");
+            return;
+        }
+
+
+        $.ajax({
+            type: "Post",
+            contentType: "application/json",
+            url: "/match/InitInventory?linesid=@Model.Lineid&Inventory=" + $("#txtRedisNum").val().trim(),
+            dataType: "json",
+            success: function (data) {
+
+                if (data.status == 0) {
+                    alert("设置成功")
+                } else {
+                    alert("设置失败")
                 }
             }
         });

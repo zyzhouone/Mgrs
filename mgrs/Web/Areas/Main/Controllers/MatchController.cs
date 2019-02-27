@@ -17,6 +17,7 @@ using System.Net;
 using System.Configuration;
 using Web.Areas.Main.Models;
 using Newtonsoft.Json;
+using Web.Models;
 
 namespace Web.Areas.Main.Controllers
 {
@@ -748,7 +749,8 @@ namespace Web.Areas.Main.Controllers
 
                 String strJson = Encoding.UTF8.GetString(pageData) ?? "";
                 rb = JsonConvert.DeserializeObject<ResponseModel>(strJson);
-                
+
+                rb.data = JsonConvert.DeserializeObject<InventoryModel>(rb.data.ToString()); 
 
             }
             catch (Exception ex)

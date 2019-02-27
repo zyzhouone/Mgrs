@@ -154,6 +154,7 @@
     <Compile Include="Areas\Main\Controllers\TeamController.cs" />
     <Compile Include="Areas\Main\Controllers\TeamImportController.cs" />
     <Compile Include="Areas\Main\Models\ResponseModel.cs" />
+    <Compile Include="Models\InventoryModel.cs" />
     <Compile Include="Utls\AngelHepler.cs" />
     <Compile Include="App_Start\AuthConfig.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -1272,7 +1273,6 @@
     <Folder Include="Assets\jquery-file-upload\server\php\files\thumbnail\" />
     <Folder Include="Data\bin\" />
     <Folder Include="Filters\" />
-    <Folder Include="Models\" />
     <Folder Include="UploadFiles\xls\upload\" />
   </ItemGroup>
   <ItemGroup>
