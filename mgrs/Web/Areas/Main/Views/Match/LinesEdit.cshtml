@@ -141,7 +141,7 @@
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>支付名额：</label>
                 <div class="controls">
-                    @Html.TextBoxFor(m => m.Paycount, new { @class = "m-wrap small" })
+                    @Html.TextBoxFor(m => m.Paycount, new { @class = "m-wrap small",onchange="SetInventory()" })
                     <span class="help-inline">@Html.ValidationMessageFor(m => m.Paycount)</span>
                     <br />
                     <div id="divInv" style="padding-top:10px;">
@@ -284,26 +284,11 @@
 
 
     function SetInventory() {
-
-        if ($("#txtRedisNum").val().trim() == "") {
-            alert("请输入库存");
-            return;
-        }
-
-
-        $.ajax({
-            type: "Post",
-            contentType: "application/json",
-            url: "/match/InitInventory?linesid=@Model.Linesid&Inventory=" + $("#txtRedisNum").val().trim(),
-            dataType: "json",
-            success: function (data) {
-
-                if (data.status == 0) {
-                    alert("设置成功")
-                } else {
-                    alert("设置失败")
-                }
-            }
-        });
+        var inventory = parseInt($("#Paycount").val()) - parseInt($("#IsPayCount").val())
+        $("#spanInventory").text(inventory);
+        $("#Inventory").val(inventory);
     }
+
+
+   
 </script>
