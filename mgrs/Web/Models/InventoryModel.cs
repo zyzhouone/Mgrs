@@ -10,4 +10,10 @@ namespace Web.Models
         public string[] valueList { get; set; }
         public string[] keyList { get; set; }
     }
+
+    public class PayCountModel
+    {
+        public string payCount { get; set; }
+        public string inventory { get; set; }
+    }
 }

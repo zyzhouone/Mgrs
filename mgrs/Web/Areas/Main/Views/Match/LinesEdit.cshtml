@@ -147,8 +147,12 @@
                     <div id="divInv" style="padding-top:10px;">
                        
                         <div>
-                            <span>库存：</span><input type="number" id="txtRedisNum" />
-                            <button type="button" class="btn blue" onclick="SetInventory()"><i class="icon-ok"></i>设置库存</button>
+                            <span>库存：</span><span id="spanInventory"></span>@*<input type="number" id="txtRedisNum" />*@
+                            <span>已支付：</span><span id="spanPayCount"></span>
+                            <input id="Inventory" name="Inventory" type="hidden" value="" />
+                            <input id="IsPayCount" name="IsPayCount" type="hidden" value="" />
+
+                            @*<button type="button" class="btn blue" onclick="SetInventory()"><i class="icon-ok"></i>设置库存</button>*@
                         </div>
                     </div>
                 </div>
@@ -258,14 +262,19 @@
         $.ajax({
             type: "Post",
             contentType: "application/json",
-            url: "/match/GetInventory?lines=@Model.Lineid",
+            url: "/match/GetInventory?linesid=@Model.Linesid",
             dataType: "json",
             success: function (data) {
 
                 if (data.status == 0) {
                    
-                    $("#txtRedisNum").val(data.data.valueList[0]);
-                    
+                    //$("#txtRedisNum").val(data.data.valueList[0]);
+                    $("#spanInventory").text(data.data.inventory);
+                    $("#spanPayCount").text(data.data.payCount);
+
+                    $("#Inventory").val(data.data.inventory);
+                    $("#IsPayCount").val(data.data.payCount);
+
                 } else {
                     alert("失败")
                 }
@@ -285,7 +294,7 @@
         $.ajax({
             type: "Post",
             contentType: "application/json",
-            url: "/match/InitInventory?linesid=@Model.Lineid&Inventory=" + $("#txtRedisNum").val().trim(),
+            url: "/match/InitInventory?linesid=@Model.Linesid&Inventory=" + $("#txtRedisNum").val().trim(),
             dataType: "json",
             success: function (data) {
 

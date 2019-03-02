@@ -401,6 +401,30 @@ namespace BLL
         }
 
         /// <summary>
+        /// zzy 2019-03-02
+        /// 获取已支付数量
+        /// </summary>
+        /// <param name="linesid"></param>
+        /// <returns></returns>
+        public String GetPayCount(string linesid)
+        {
+            using (var db = new BFdbContext())
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.Append("select cast(count(*) as char(10)) as ispaycount from tbl_orders a,tbl_teams b where a.teamid=b.teamid and a.status =2 ");
+
+                if (!string.IsNullOrEmpty(linesid))
+                    sql.AppendFormat("and b.linesid='{0}'", linesid);
+
+                return db.SqlQuery<String>(sql.ToString()).First().ToString();
+                
+                
+            }
+        
+
+        }
+
+        /// <summary>
         /// 更新线路类型
         /// </summary>
         /// <param name="ent"></param>

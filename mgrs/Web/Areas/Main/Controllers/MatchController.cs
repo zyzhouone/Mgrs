@@ -696,6 +696,14 @@ namespace Web.Areas.Main.Controllers
             try
             {
                 bll.EditLines(model);
+                //设置库存
+                int Inventory = Convert.ToInt32(model.Paycount);
+                if (fc["IsPaycount"] != "")
+                {
+                    Inventory = Inventory - Int32.Parse(fc["IsPaycount"].ToString().Trim());
+                }
+
+                InitInventory(model.Linesid, Inventory.ToString());
             }
             catch (ValidException ex)
             {
@@ -707,9 +715,9 @@ namespace Web.Areas.Main.Controllers
         }
 
 
-        public JsonResult InitInventory(string linesid, string Inventory)
+        public void InitInventory(string linesid, string Inventory)
         {
-            JsonResult jr = new JsonResult();
+
             ResponseModel rb = new ResponseModel();
             try
             {
@@ -729,18 +737,16 @@ namespace Web.Areas.Main.Controllers
             {
                 rb.status = -1;
             }
-            jr.Data = rb;
-            return jr;
         }
 
-        public JsonResult GetInventory(string linesid, string lines)
+        public JsonResult GetInventory(string linesid)
         {
             JsonResult jr = new JsonResult();
             ResponseModel rb = new ResponseModel();
             try
             {
                 WebClient MyWebClient = new WebClient();
-                string strUrl = ConfigurationManager.AppSettings.Get("api_url") + string.Format("/redis/get?linesId={0}&lines={1}", linesid, lines);
+                string strUrl = ConfigurationManager.AppSettings.Get("api_url") + string.Format("/redis/get?lines={0}", linesid);
                 byte[] byteArray = Encoding.UTF8.GetBytes(strUrl);
 
 
@@ -750,7 +756,14 @@ namespace Web.Areas.Main.Controllers
                 String strJson = Encoding.UTF8.GetString(pageData) ?? "";
                 rb = JsonConvert.DeserializeObject<ResponseModel>(strJson);
 
-                rb.data = JsonConvert.DeserializeObject<InventoryModel>(rb.data.ToString()); 
+                InventoryModel inventory = JsonConvert.DeserializeObject<InventoryModel>(rb.data.ToString());
+
+
+                var bll = new MatchBll();
+                PayCountModel model = new PayCountModel();
+                model.inventory = inventory.valueList[0];
+                model.payCount = bll.GetPayCount(linesid);
+                rb.data = model;
 
             }
             catch (Exception ex)
