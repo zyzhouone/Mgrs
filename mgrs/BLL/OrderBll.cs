@@ -44,7 +44,7 @@ namespace BLL
                     sql.AppendFormat(" AND t.teamid = '{0}'", teamid);
 
                 if (!string.IsNullOrEmpty(moblie))
-                    sql.AppendFormat(" AND u.mobile like '%{0}%'", moblie);
+                    sql.AppendFormat(" AND o.mobile like '%{0}%'", moblie);
 
                 if (!string.IsNullOrEmpty(teamname))
                     sql.AppendFormat(" AND teamname like '%{0}%'", teamname);
