@@ -96,5 +96,12 @@ namespace Model
         public DateTime? paytime
         { get; set; }
 
+
+        public string info1 { get; set; }
+        public string info2 { get; set; }
+        public string info3 { get; set; }
+        public string cardtype { get; set; }
+        public string birthday { get; set; }
+        public string sexy { get; set; }
     }
 }

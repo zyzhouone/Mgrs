@@ -25,6 +25,7 @@ namespace BLL
             {
                 StringBuilder sql = new StringBuilder();
                 sql.Append(@"select * from (SELECT case when isNULL(tc.team_combine_id)=1 then t.company else '【合并组队】' end as 'CompanyText',
+e.birthday,e.info1,e.info2,e.info3,e.cardtype,e.sexy,
                                 u.name as nickname,
                                 t.*,
                                 u.mobile as Moblie,
@@ -38,8 +39,9 @@ namespace BLL
                                 left join tbl_match m on m.match_id = t.match_id 
                                 left join tbl_lines ls on ls.lines_id = t.linesid
                                 left join tbl_teams_combine tc on tc.team_id=t.teamid
+left join tbl_match_extra e on e.teamid=t.teamid
                                 ) a
-                                 where 1=1 ");
+                                 where 1=1  ");
 
                 if (!string.IsNullOrEmpty(matchname))
                     sql.AppendFormat(" AND a.matchname like '%{0}%'", matchname.Trim());

@@ -180,7 +180,14 @@
                                 }
                             }
                         </a>
-                    </td>
+                                                @if(!string.IsNullOrEmpty(m.info1))
+                        {
+                                                    <br />
+    <a class="mini" href="javascript:;" onclick="ShowExter('@m.info1','@m.sexy','@m.birthday','@m.info3')">
+        附加信息
+    </a>
+                        }
+</td>
                     <td>
                         <a class="mini" title='查看订单详情' href="@Url.Action("Index", "Order", new { teamid = m.teamid })" target="_self">
                             @foreach (var item in ViewData["Type_"] as List<SelectListItem>)
@@ -318,4 +325,77 @@
                     });
                 }
             }
+
+            function ShowExter(info1, info2, info3, info4) {
+                $("#span1").text(info1);
+                $("#span2").text(info2);
+                $("#span3").text(info3);
+                $("#imgExt").attr("src",info4);
+
+                $("#TB_overlayBG2").show();
+                $("#TB_window3").show();
+            }
+
+            function CancelExter() {
+                
+                $("#TB_overlayBG2").hide();
+                $("#TB_window3").hide();
+            }
         </script>
+<div id="TB_window3" style="position: fixed;
+    background: #ffffff;
+    z-index: 102;
+    color: #000000;
+    display: none;
+    border: 4px solid #525252;
+    text-align: left;
+    top: 50%;
+    min-height:300px;
+    left: 50%;margin-left: -265px; width: 530px; margin-top: -280px; ">
+    <div id="TB_title">
+        <div id="TB_ajaxWindowTitle">附加信息</div>
+        <div id="TB_closeAjaxWindow">
+            <a href="#" id="TB_closeWindowButton" title="Close" onclick="CancelExter()" style="color:#0c4857">点击关闭</a>
+        </div>
+    </div>
+    <div class="portlet-body form-horizontal form-bordered form-row-stripped">
+        <div class="row-fluid">
+
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>姓名：</label>
+                <div class="controls">
+                    <span id="span1"></span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>性别：</label>
+                <div class="controls">
+                    <span id="span2"></span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>生日：</label>
+                <div class="controls">
+                    <span id="span3"></span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>图片：</label>
+                <div class="controls">
+                    <img id="imgExt" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+
+        <button type="button" class="btn" id="cancel" onclick="CancelExter()">关闭</button>
+        <div class="validation-summary-valid" data-valmsg-summary="true">
+            <ul>
+                <li style="display:none"></li>
+            </ul>
+        </div>
+
+    </div>
+
+</div>
