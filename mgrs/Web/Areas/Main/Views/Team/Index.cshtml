@@ -154,6 +154,13 @@
                     </td>
                     <td>
                         @m.Linename
+                        @if (!string.IsNullOrEmpty(m.info1))
+                        {
+                            <br />
+                            <a class="mini" href="javascript:;" onclick="ShowExter('@m.info1','@m.sexy','@m.birthday','@m.info3')">
+                                附加信息
+                            </a>
+                        }
                     </td>
                     <td>
                         @m.Linesname
@@ -180,13 +187,7 @@
                                 }
                             }
                         </a>
-                                                @if(!string.IsNullOrEmpty(m.info1))
-                        {
-                                                    <br />
-    <a class="mini" href="javascript:;" onclick="ShowExter('@m.info1','@m.sexy','@m.birthday','@m.info3')">
-        附加信息
-    </a>
-                        }
+                                               
 </td>
                     <td>
                         <a class="mini" title='查看订单详情' href="@Url.Action("Index", "Order", new { teamid = m.teamid })" target="_self">
@@ -330,7 +331,7 @@
                 $("#span1").text(info1);
                 $("#span2").text(info2);
                 $("#span3").text(info3);
-                $("#imgExt").attr("src",info4);
+                $("#imgExt").attr("src","http://imgurl.chengshidingxiang.com/"+info4);
 
                 $("#TB_overlayBG2").show();
                 $("#TB_window3").show();
