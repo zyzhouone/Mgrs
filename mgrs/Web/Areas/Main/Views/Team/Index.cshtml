@@ -157,7 +157,7 @@
                         @if (!string.IsNullOrEmpty(m.info1))
                         {
                             <br />
-                            <a class="mini" href="javascript:;" onclick="ShowExter('@m.info1','@m.sexy','@m.birthday','@m.info3')">
+                            <a class="mini" href="javascript:;" onclick="ShowExter('@m.info1','@m.cardtype','@m.info2','@m.sexy','@m.birthday','@m.info3')">
                                 附加信息
                             </a>
                         }
@@ -327,11 +327,23 @@
                 }
             }
 
-            function ShowExter(info1, info2, info3, info4) {
+            function ShowExter(info1,cardtype,info2, info3, info4,info5) {
                 $("#span1").text(info1);
-                $("#span2").text(info2);
-                $("#span3").text(info3);
-                $("#imgExt").attr("src","http://imgurl.chengshidingxiang.com/"+info4);
+                $("#span2").text(info3);
+                $("#span3").text(info4);
+                if (cardtype == "1") {
+                    $("#span4").text("身份证");
+                } else if (cardtype == "2") {
+                    $("#span4").text("护照");
+                } else if (cardtype == "3") {
+                    $("#span4").text("台胞证");
+                } else if (cardtype == "4") {
+                    $("#span4").text("港澳通行证");
+                } else if (cardtype == "5") {
+                    $("#span4").text("其他");
+                }
+                $("#span5").text(info2);
+                $("#imgExt").attr("src","http://imgurl.chengshidingxiang.com/"+info5);
 
                 $("#TB_overlayBG2").show();
                 $("#TB_window3").show();
@@ -366,6 +378,18 @@
                 <label class="control-label"><span class="required">*</span>姓名：</label>
                 <div class="controls">
                     <span id="span1"></span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>证件类型：</label>
+                <div class="controls">
+                    <span id="span4"></span>
+                </div>
+            </div>
+            <div class="control-group">
+                <label class="control-label"><span class="required">*</span>证件号：</label>
+                <div class="controls">
+                    <span id="span5"></span>
                 </div>
             </div>
             <div class="control-group">
