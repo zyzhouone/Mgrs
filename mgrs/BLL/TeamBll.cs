@@ -25,7 +25,7 @@ namespace BLL
             {
                 StringBuilder sql = new StringBuilder();
                 sql.Append(@"select * from (SELECT case when isNULL(tc.team_combine_id)=1 then t.company else '【合并组队】' end as 'CompanyText',
-e.birthday,e.info1,e.info2,e.info3,e.cardtype,e.sexy,
+ifnull(e.birthday,'1900-01-01') as birthday,e.info1,e.info2,e.info3,e.cardtype,e.sexy,
                                 u.name as nickname,
                                 t.*,
                                 u.mobile as Moblie,
