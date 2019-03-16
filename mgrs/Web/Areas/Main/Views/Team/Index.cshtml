@@ -329,7 +329,12 @@
 
             function ShowExter(info1,cardtype,info2, info3, info4,info5) {
                 $("#span1").text(info1);
-                $("#span2").text(info3);
+                if (info3 == "1") {
+                    $("#span2").text("女");
+                } else if (cardtype == "2") {
+                    $("#span2").text("男");
+                }
+                
                 $("#span3").text(info4);
                 if (cardtype == "1") {
                     $("#span4").text("身份证");
@@ -407,7 +412,7 @@
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>图片：</label>
                 <div class="controls">
-                    <img id="imgExt" />
+                    <img id="imgExt" style="width:200px; height:100px;" />
                 </div>
             </div>
         </div>

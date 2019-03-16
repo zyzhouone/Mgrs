@@ -101,7 +101,7 @@ namespace Model
         public string info2 { get; set; }
         public string info3 { get; set; }
         public string cardtype { get; set; }
-        public string birthday { get; set; }
+        public DateTime birthday { get; set; }
         public string sexy { get; set; }
     }
 }
