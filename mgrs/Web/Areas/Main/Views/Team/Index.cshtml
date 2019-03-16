@@ -330,9 +330,9 @@
             function ShowExter(info1,cardtype,info2, info3, info4,info5) {
                 $("#span1").text(info1);
                 if (info3 == "1") {
-                    $("#span2").text("女");
-                } else if (cardtype == "2") {
                     $("#span2").text("男");
+                } else if (info3 == "2") {
+                    $("#span2").text("女");
                 }
                 
                 $("#span3").text(info4);
@@ -347,8 +347,9 @@
                 } else if (cardtype == "5") {
                     $("#span4").text("其他");
                 }
-                $("#span5").text(info2);
-                $("#imgExt").attr("src","http://imgurl.chengshidingxiang.com/"+info5);
+                $("#span5").text(info2); 
+                $("#imgExt").attr("src", "http://imgurl.chengshidingxiang.com/" + info5);
+                //$("#imgExt").attr("download", info5);
 
                 $("#TB_overlayBG2").show();
                 $("#TB_window3").show();
@@ -411,8 +412,9 @@
             </div>
             <div class="control-group">
                 <label class="control-label"><span class="required">*</span>图片：</label>
-                <div class="controls">
-                    <img id="imgExt" style="width:200px; height:100px;" />
+                <div class="controls" style="width:300px;height:150px">
+                    <img id="imgExt" style="width:auto; height:auto; max-width:100%; max-height:100%;"  />
+                    @*<button type="button" class="btn"  onclick="">下载</button>*@
                 </div>
             </div>
         </div>
