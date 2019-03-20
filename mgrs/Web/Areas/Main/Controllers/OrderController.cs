@@ -25,10 +25,10 @@ namespace Web.Areas.Main.Controllers
             PagedList<tblordersView> orders = null;
             try
             {
-                if (optStatus != null)
-                {
+              //  if (optStatus != null)
+             //   {
                     orders = new OrderBll().GetOrders(matchname, teamid, teamname, mobile, optStatus, optTeamType, optOrderBy, pageIndex.GetValueOrDefault(1));
-                }
+             //   }
                 List<SelectListItem> Status = new MemberBll().GetDict(7);
                 ViewData["Status"] = Status;
 
