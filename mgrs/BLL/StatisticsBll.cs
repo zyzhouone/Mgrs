@@ -239,10 +239,14 @@ namespace BLL
             using (var db = new BFdbContext())
             {
                 StringBuilder sql = new StringBuilder();
-                sql.Append("SELECT a.sexy,a.age FROM tbl_match_users a,tbl_match b where a.match_id=b.match_id  AND a.status  <>  '9' and a.age > 0 ");
-
+                //pang edit 20190320
+                //sql.Append("SELECT a.sexy,a.age FROM tbl_match_users a,tbl_match b where a.match_id=b.match_id  AND a.status  <>  '9' and a.age > 0 ");
+                sql.Append("SELECT a.sexy,a.age FROM tbl_match_users a,tbl_match b,tbl_teams c where a.match_id=b.match_id AND a.teamid=c.teamid   AND a.status  <>  '9' and a.age > 0 ");
                 if (!string.IsNullOrEmpty(matchid))
                     sql.AppendFormat(" AND b.match_id = '{0}'", matchid);
+
+                sql.AppendFormat(" AND c.status = '{0}'", "1");
+
 
                 return db.SqlQuery<otherStatistic>(sql.ToString()).ToList();
             }
