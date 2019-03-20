@@ -245,7 +245,7 @@ namespace BLL
                 if (!string.IsNullOrEmpty(matchid))
                     sql.AppendFormat(" AND b.match_id = '{0}'", matchid);
 
-                sql.AppendFormat(" AND c.status = '{0}'", "1");
+                sql.AppendFormat(" AND c.status = '{0}'", "1");  
 
 
                 return db.SqlQuery<otherStatistic>(sql.ToString()).ToList();
