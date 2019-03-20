@@ -26,6 +26,15 @@
                         搜索 <i class="icon-search"></i>
                     </button>
                 </label>
+
+                <label>
+                    <span>状态：</span>
+                    <select id="optStatus" name="optStatus" class="m-wrap small" style="width:90px">
+                        
+                        @Html.Raw(ViewBag.optStatus)
+                    </select>
+                </label>
+
                 <label>
                     <span>赛事名称：</span>
                     <select id="optMatch" name="optMatch" data-placeholder="请选择赛事" class="m-wrap large">

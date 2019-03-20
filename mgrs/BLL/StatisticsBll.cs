@@ -234,7 +234,7 @@ namespace BLL
         /// </summary>
         /// <param name="matchid"></param>
         /// <returns></returns>
-        public List<otherStatistic> getMatchUsersList(string matchid)
+        public List<otherStatistic> getMatchUsersList(string matchid,string status)
         {
             using (var db = new BFdbContext())
             {
@@ -245,7 +245,8 @@ namespace BLL
                 if (!string.IsNullOrEmpty(matchid))
                     sql.AppendFormat(" AND b.match_id = '{0}'", matchid);
 
-                sql.AppendFormat(" AND c.status = '{0}'", "1");  
+                if (!string.IsNullOrEmpty(status))
+                sql.AppendFormat(" AND c.status = '{0}'", status);  
 
 
                 return db.SqlQuery<otherStatistic>(sql.ToString()).ToList();

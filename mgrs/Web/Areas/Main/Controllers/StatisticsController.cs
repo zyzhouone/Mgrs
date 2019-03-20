@@ -579,7 +579,7 @@ namespace Web.Areas.Main.Controllers
 
 
         //其他统计 包括性别，年龄段，区域统计
-        public ActionResult Other(string optMatch)
+        public ActionResult Other(string optMatch, string optStatus)
         {
             if (!string.IsNullOrEmpty(optMatch))
             {
@@ -607,12 +607,38 @@ namespace Web.Areas.Main.Controllers
                 }
             }
 
+            List<SelectListItem> Status = new List<SelectListItem>();
+            SelectListItem item1=new SelectListItem();
+            item1.Text="全部";
+            item1.Value="";
+            Status.Add(item1);
+            SelectListItem item2 = new SelectListItem();
+            item2.Text = "开始组队";
+            item2.Value = "6";
+            Status.Add(item2);
+            SelectListItem item3 = new SelectListItem();
+            item3.Text = "预报名成功";
+            item3.Value = "1";
+            Status.Add(item3);
+            SelectListItem item4 = new SelectListItem();
+            item4.Text = "正式报名成功";
+            item4.Value = "0";
+            Status.Add(item4);
+
+            foreach (SelectListItem r in Status)
+            {
+                if (optStatus == r.Value)
+                    ViewBag.optStatus += "<option value='" + r.Value.ToString() + "'selected>" + r.Text.ToString() + "</option>";
+                else
+                    ViewBag.optStatus += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
+            }
+
             if (!string.IsNullOrEmpty(optMatch))
             {
                 ViewBag.male = 0;
                 ViewBag.female = 0;
                 //读取赛事所有队员信息
-                var userList = new StatisticsBll().getMatchUsersList(optMatch);
+                var userList = new StatisticsBll().getMatchUsersList(optMatch,optStatus);
                 if(userList!=null)
                 {
                     //性别统计
