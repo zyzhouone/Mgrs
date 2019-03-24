@@ -153,7 +153,9 @@
     <Compile Include="Areas\Main\Controllers\SystemController.cs" />
     <Compile Include="Areas\Main\Controllers\TeamController.cs" />
     <Compile Include="Areas\Main\Controllers\TeamImportController.cs" />
+    <Compile Include="Areas\Main\Models\CombineResponseModel.cs" />
     <Compile Include="Areas\Main\Models\ResponseModel.cs" />
+    <Compile Include="Areas\Main\Models\TeamGroupModel.cs" />
     <Compile Include="Models\InventoryModel.cs" />
     <Compile Include="Utls\AngelHepler.cs" />
     <Compile Include="App_Start\AuthConfig.cs" />
@@ -724,6 +726,7 @@
     <Content Include="Assets\img\icon-img-up.png" />
     <Content Include="Assets\img\invoice\walmart.png" />
     <Content Include="Assets\img\loading.gif" />
+    <Content Include="Assets\img\loadingBar.gif" />
     <Content Include="Assets\img\logo-big.png" />
     <Content Include="Assets\img\logo.png" />
     <Content Include="Assets\img\menu-toggler.png" />
@@ -1035,6 +1038,7 @@
     <Content Include="Assets\js\jquery-1.8.3.min.js" />
     <Content Include="Assets\js\jquery.blockui.js" />
     <Content Include="Assets\js\jquery.cookie.js" />
+    <Content Include="Assets\js\jquery.json-2.3.min.js" />
     <Content Include="Assets\js\jquery.pulsate.min.js" />
     <Content Include="Assets\js\respond.js" />
     <Content Include="Assets\uniform\css\uniform.default.css" />
@@ -1332,6 +1336,7 @@
     <Content Include="Areas\Main\Views\Statistics\Other.cshtml" />
     <Content Include="Areas\Main\Views\System\CreateBinner.cshtml" />
     <Content Include="Areas\Main\Views\System\BannerManager.cshtml" />
+    <Content Include="Areas\Main\Views\Team\TeamGroup.cshtml" />
     <None Include="Assets\bootstrap-colorpicker\less\colorpicker.less" />
     <None Include="Assets\bootstrap-datepicker\less\datepicker.less" />
     <None Include="Assets\bootstrap-daterangepicker\README.md" />

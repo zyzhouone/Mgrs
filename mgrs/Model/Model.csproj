@@ -117,6 +117,7 @@
     <Compile Include="tblusersView.cs" />
     <Compile Include="tbl_match_pics.cs" />
     <Compile Include="teamfenzu.cs" />
+    <Compile Include="TeamGroupView.cs" />
     <Compile Include="usergroup.cs" />
   </ItemGroup>
   <ItemGroup>

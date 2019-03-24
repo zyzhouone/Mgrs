@@ -11,6 +11,8 @@ using System.Data;
 using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using System.IO;
+using Web.Areas.Main.Models;
+using System.Web.Script.Serialization;
 
 namespace Web.Areas.Main.Controllers
 {
@@ -604,5 +606,133 @@ namespace Web.Areas.Main.Controllers
             var teamuser = new TeamBll().getTeamUsers(matchid, teamid);
             return View(teamuser);
         }
+
+        /// <summary>
+        /// 组合 zzy 2019-03-24
+        /// </summary>
+        /// <param name="optBatchno"></param>
+        /// <returns></returns>
+        public ActionResult TeamGroup(string optBatchno,string optType, int? pageIndex, bool isQuery = false)
+        {
+
+            var teams =new List<TeamGroupView>();
+            try
+            {
+                if (isQuery)
+                {
+                    teams = new TeamBll().GetTeamGroups(optBatchno, optType, pageIndex.GetValueOrDefault(1));
+                }
+                else
+                {
+                    teams = new PagedList<TeamGroupView>(teams, 1, 1);
+                }
+
+                List<SelectListItem> Sexy = new MemberBll().GetDict(1);
+                ViewData["Sexy"] = Sexy;
+
+                ViewData["BatchNo"] = optBatchno;
+                List<SelectListItem> BatchNo = new TeamBll().GetBatchNo();
+                foreach (SelectListItem barchno in BatchNo)
+                {
+                    if (optBatchno == barchno.Value)
+                        ViewBag.BatchNo += "<option value='" + barchno.Value + "' selected>" + barchno.Text + "</option>";
+                    else
+                        ViewBag.BatchNo += "<option value='" + barchno.Value + "'>" + barchno.Text + "</option>";
+                }
+
+                ViewData["TeamType"] = optType;
+                if (string.IsNullOrEmpty(optType))
+                {
+                    ViewBag.Type += "<option value='未组合'>未组合</option>";
+                    ViewBag.Type += "<option value='已组合'>已组合</option>";
+                }
+                else if (optType == "未组合")
+                {
+                    ViewBag.Type += "<option value='未组合' selected>未组合</option>";
+                    ViewBag.Type += "<option value='已组合'>已组合</option>";
+                }
+                else
+                {
+                    ViewBag.Type += "<option value='未组合'>未组合</option>";
+                    ViewBag.Type += "<option value='已组合' selected>已组合</option>";
+                }
+
+
+                List<SelectListItem> MatchList = new MatchBll().GetValidMatchsList();
+                foreach (SelectListItem match in MatchList)
+                {
+                    if (optBatchno == match.Value)
+                        ViewBag.ComMatch += "<option value='" + match.Value + "' selected>" + match.Text + "</option>";
+                    else
+                        ViewBag.ComMatch += "<option value='" + match.Value + "'>" + match.Text + "</option>";
+                }
+                
+            }
+            catch (Exception e)
+            {
+
+            }
+            return View(teams);
+        }
+
+        /// <summary>
+        /// zzy 2019-03-24
+        /// 队伍组合
+        /// </summary>
+        /// <param name="matchid"></param>
+        /// <param name="teamid"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult TeamsConBine(string CombineListJson, string matchid, string lineid, string linesid, int count)
+        {
+            var bll = new TeamBll();
+            JsonResult jr = new JsonResult();
+            CombineResponseModel response = new CombineResponseModel();
+            try
+            {
+               
+                JavaScriptSerializer serializer = new JavaScriptSerializer();
+               // TeamGroupModel model = serializer.Deserialize<TeamGroupModel>(CombineListJson);
+                
+                string[] teamids = CombineListJson.Split(',');
+                string msg = bll.TeamsConBine(teamids[0], teamids[1], teamids[2], teamids[3], teamids[4], linesid, lineid);
+                if (!string.IsNullOrEmpty(msg))
+                {
+                    response.iResultCode = -1;
+                    response.strMsg = msg;
+                }
+                else
+                {
+                    response.iResultCode = 0;
+                }
+            }
+            catch (ValidException ex)
+            {
+                response.iResultCode = -1;
+                response.strMsg = ex.Message; ;
+            }
+            finally
+            {
+
+                response.iCount = count + 1;
+            }
+            jr.Data = response;
+            return jr;
+        }
+
+        /// <summary>
+        /// zzy 2019-01-03
+        /// 获取playercount等于5的线路
+        /// </summary>
+        /// <param name="lineid"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public ActionResult GetLinesByLine2(string lineid)
+        {
+            var bll = new MatchBll();
+            List<SelectListItem> line = new MatchBll().GetlinesList2(lineid);
+            return Json(line, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }

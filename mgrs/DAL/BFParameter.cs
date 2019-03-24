@@ -79,5 +79,16 @@ namespace DAL
 
             return DbProviderFactories.GetFactory(providerName).CreateParameter();
         }
+
+        public object GetOutParameter(string name)
+        {
+            foreach (var p in _pList)
+            {
+                if (p.ParameterName == name)
+                    return p.Value;
+            }
+
+            return null;
+        }
     }
 }

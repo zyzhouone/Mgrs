@@ -7,6 +7,7 @@ using DAL;
 using Model;
 using Utls;
 using System.Web.Mvc;
+using System.Data;
 
 namespace BLL
 {
@@ -19,7 +20,7 @@ namespace BLL
         /// <param name="company"></param>
         /// <param name="pageindex"></param>
         /// <returns></returns>
-        public PagedList<tblteamsVew> GetTeams(string matchname, string teamname, string company,string phone, string status, string opttype, string linename,string optiscoupon, int pageindex)
+        public PagedList<tblteamsVew> GetTeams(string matchname, string teamname, string company, string phone, string status, string opttype, string linename, string optiscoupon, int pageindex)
         {
             using (var db = new BFdbContext())
             {
@@ -143,7 +144,7 @@ left join tbl_match_extra e on e.teamid=t.teamid
 
                 sql.AppendFormat(" AND a.status  <>  '{0}'", "9");
 
-               return db.SqlQuery<tblteamsVew, string>(sql.ToString(), pageindex, p => p.teamid);
+                return db.SqlQuery<tblteamsVew, string>(sql.ToString(), pageindex, p => p.teamid);
             }
         }
 
@@ -193,7 +194,7 @@ left join tbl_match_extra e on e.teamid=t.teamid
         /// </summary>
         /// <param name="Teamname"></param>
         /// <returns></returns>
-        public List<tblteamsEntity> GetOtherTeams(string match_id,string teamid)
+        public List<tblteamsEntity> GetOtherTeams(string match_id, string teamid)
         {
             using (var db = new BFdbContext())
             {
@@ -208,7 +209,7 @@ left join tbl_match_extra e on e.teamid=t.teamid
                 return db.SqlQuery<tblteamsEntity>(sql.ToString()).ToList();
             }
         }
-        
+
 
         /// <summary>
         /// 根据id查询队伍
@@ -274,8 +275,8 @@ left join tbl_match_extra e on e.teamid=t.teamid
                         }
                         db.TUpdate<tblteams>(ent);
                         //同步更新matchuser表的teamname
-                        string sql = string.Format("update tbl_match_users t set t.teamname = '{0}'  where t.teamid = '{1}'",ent.Teamname,ent.teamid);
-                        db.ExecuteSqlCommand(sql);                            
+                        string sql = string.Format("update tbl_match_users t set t.teamname = '{0}'  where t.teamid = '{1}'", ent.Teamname, ent.teamid);
+                        db.ExecuteSqlCommand(sql);
                         db.SaveChanges();
                         tx.Commit();
                     }
@@ -452,7 +453,7 @@ left join tbl_match_extra e on e.teamid=t.teamid
             using (var db = new BFdbContext())
             {
                 var usr = db.tblusers.FirstOrDefault(p => p.Mobile == mobile && p.Status == 0);
-                if (usr == null || usr.Isupt=="0")
+                if (usr == null || usr.Isupt == "0")
                     return -4;
 
                 var musr = db.tblmatchusers.FirstOrDefault(p => p.Matchuserid == mid);
@@ -508,7 +509,7 @@ left join tbl_match_extra e on e.teamid=t.teamid
                 tbl.Teamid = musr.Teamid;
 
                 db.TInsert<tblreplace>(tbl);
-                
+
                 return db.SaveChanges();
             }
         }
@@ -586,7 +587,7 @@ left join tbl_match_extra e on e.teamid=t.teamid
         /// <param name="matchid"></param>
         /// <param name="lineid"></param>
         /// <returns></returns>
-        public List<SelectListItem> GetLinesByLineid(string matchid,string lineid)
+        public List<SelectListItem> GetLinesByLineid(string matchid, string lineid)
         {
             using (var db = new BFdbContext())
             {
@@ -602,6 +603,80 @@ left join tbl_match_extra e on e.teamid=t.teamid
             }
         }
 
-        
+        public PagedList<TeamGroupView> GetTeamGroups(string batchno, string optType, int pageindex)
+        {
+            using (var db = new BFdbContext())
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.Append(@"select z.nickname ,a.group_tag,a.sex,
+                            z.teamname,
+                            z.birthday,
+                            z.leader,-- 是否队长
+                            case when team_combine_batchno is null then '未组合' else team_combine_batchno end as  isgroup,-- 是否组合,
+                            z.teamno,
+                            z.match_id,
+                            z.teamid
+                            from team_group a
+                            left join (
+			                            select a.matchuserid,a.nickname,a.birthday,a.leader,  b.teamname,b.teamno,c.team_combine_batchno,b.match_id,b.teamid
+			                            from tbl_match_users a
+			                              left join tbl_teams b on a.teamid=b.teamid
+				                            left join tbl_teams_combine c on c.team_id=b.teamid
+ 
+                            )  z  on a.user_id=z.matchuserid
+                                 where 1=1  ");
+
+                if (!string.IsNullOrEmpty(batchno))
+                    sql.AppendFormat(" and a.batch_no='{0}'", batchno.Trim());
+
+                if (!string.IsNullOrEmpty(optType))
+                {
+                    if(optType=="未组合"){
+                    sql.AppendFormat(" AND team_combine_batchno is null");
+                    }else{
+                        sql.AppendFormat(" AND team_combine_batchno is not null");
+                    }
+                }
+
+
+                sql.Append("order by team_combine_batchno,leader desc");
+                return db.SqlQuery<TeamGroupView, string>(sql.ToString(), pageindex, p => p.teamid);
+            }
+        }
+
+        public List<SelectListItem> GetBatchNo()
+        {
+            using (var db = new BFdbContext())
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.Append("select DISTINCT batch_no as value,batch_no as text from team_group order by 1 desc ");
+
+          
+
+                return db.SqlQuery<SelectListItem>(sql.ToString()).ToList();
+            }
+        }
+
+        public string TeamsConBine(string teamid1, string teamid2, string teamid3, string teamid4, string teamid5, string optLines, string optLine)
+        {
+            using (var db = new BFdbContext())
+            {
+
+                BFParameters bf = new BFParameters();
+                bf.Add("@from_teamid1", teamid1);
+                bf.Add("@from_teamid2", teamid2);
+                bf.Add("@from_teamid3", teamid3);
+                bf.Add("@from_teamid4", teamid4);
+                bf.Add("@from_teamid5", teamid5);
+                bf.Add("@to_team_id", "");
+                bf.Add("@to_linesid", optLines);
+                bf.Add("@to_lineid", optLine);
+                bf.Add("@msg", null, DbType.String, ParameterDirection.Output);
+                db.MysqlExecuteProcedure("sp_teamcombine_ex", bf);
+                return bf.GetOutParameter("@msg").ToString();
+            }
+        }
+
+
     }
 }

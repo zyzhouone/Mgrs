@@ -285,6 +285,23 @@ namespace BLL
             }
         }
 
+
+        /// <summary>
+        /// zzy 2019-03-24
+        /// 组合下拉
+        /// </summary>
+        /// <returns></returns>
+        public List<SelectListItem> GetValidMatchsList()
+        {
+            using (var db = new BFdbContext())
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.Append("SELECT  a.match_id as value,a.match_name as text FROM tbl_match a  where `status`<>'5' ");
+                return db.SqlQuery<SelectListItem>(sql.ToString()).ToList();
+            }
+        }
+
+
         /// <summary>
         /// 获取线路类型列表
         /// </summary>
@@ -946,5 +963,22 @@ namespace BLL
                 return res;
             }
         }
+
+        public List<SelectListItem> GetlinesList2(string lineid)
+        {
+            using (var db = new BFdbContext())
+            {
+                StringBuilder sql = new StringBuilder();
+                sql.Append("SELECT a.lines_id as value,a.linename as text FROM tbl_lines a  where 1=1 and playercount=5 ");
+
+                if (!string.IsNullOrEmpty(lineid))
+                    sql.AppendFormat(" AND a.line_id = '{0}'", lineid);
+
+                sql.Append(" order by a.line_no ");
+
+                return db.SqlQuery<SelectListItem>(sql.ToString()).ToList();
+            }
+        }
+
     }
 }

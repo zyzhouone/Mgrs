@@ -305,6 +305,47 @@ namespace DAL
         }
         #endregion
 
+
+        public int MysqlExecuteProcedure(string proName, BFParameters parms)
+        {
+            string proc = "";
+            var ps = parms.GetDbParameters(ref proc);
+
+            using (DbConnection conn = Database.Connection)
+            {
+                try
+                {
+
+                    if (conn.State != ConnectionState.Open)
+                        conn.Open();
+
+
+                    // var t=  conn.BeginTransaction();
+
+                    try
+                    {
+                        DbCommand cmd = Database.Connection.CreateCommand();
+                        cmd.CommandText = proName;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        cmd.Parameters.AddRange(ps);
+
+                        cmd.ExecuteNonQuery();
+                        // t.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        // t.Rollback();
+                    }
+                    return 0;
+                }
+                catch (Exception)
+                {
+                    return -1;
+                }
+            }
+        }
+
+
         /// <summary>
         /// 设置数据库
         /// </summary>
