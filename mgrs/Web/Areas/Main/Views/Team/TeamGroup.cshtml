@@ -5,7 +5,7 @@
     ViewBag.Title = "";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@model PagedList<TeamGroupView>
+@model List<TeamGroupView>
 
 <style>
     .select.m-wrap.small1 {
@@ -130,7 +130,7 @@
                     <button type="submit" class="btn">
                         搜索 <i class="icon-search"></i>
                     </button>
-                    <input type="hidden" value="true" id="isQuery" name="isQuery" />
+                    
                 </label>
                 <label>
                     <span>BatchNo：</span>
@@ -212,9 +212,18 @@
         </tbody>
     </table>
 }
+
+
 <div class="dataTables_paginate paging_bootstrap pagination">
-    @Html.Pager(Model, new PagerOptions() { ShowTotalItemCount = true })
+
+    <!--MvcPager 1.5 for ASP.NET MVC 3.0 © 2009-2011 Webdiyer (http://www.webdiyer.com)-->
+    <div class="pages"><span>总条数: @Model.Count</span></div>
+    <!--MvcPager 1.5 for ASP.NET MVC 3.0 © 2009-2011 Webdiyer (http://www.webdiyer.com)-->
+
 </div>
+@*<div class="dataTables_paginate paging_bootstrap pagination">
+    @Html.Pager(Model, new PagerOptions() { ShowTotalItemCount = true })
+</div>*@
 
 <script type="text/javascript">
 

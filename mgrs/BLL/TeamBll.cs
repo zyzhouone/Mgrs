@@ -603,7 +603,7 @@ left join tbl_match_extra e on e.teamid=t.teamid
             }
         }
 
-        public PagedList<TeamGroupView> GetTeamGroups(string batchno, string optType, int pageindex)
+        public List<TeamGroupView> GetTeamGroups(string batchno, string optType)
         {
             using (var db = new BFdbContext())
             {
@@ -640,7 +640,7 @@ left join tbl_match_extra e on e.teamid=t.teamid
 
 
                 sql.Append("order by team_combine_batchno,leader desc");
-                return db.SqlQuery<TeamGroupView, string>(sql.ToString(), pageindex, p => p.teamid);
+                return db.SqlQuery<TeamGroupView>(sql.ToString()).ToList();
             }
         }
 

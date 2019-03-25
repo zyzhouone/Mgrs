@@ -612,20 +612,17 @@ namespace Web.Areas.Main.Controllers
         /// </summary>
         /// <param name="optBatchno"></param>
         /// <returns></returns>
-        public ActionResult TeamGroup(string optBatchno,string optType, int? pageIndex, bool isQuery = false)
+        public ActionResult TeamGroup(string optBatchno,string optType)
         {
 
             var teams =new List<TeamGroupView>();
             try
             {
-                if (isQuery)
+                if (!string.IsNullOrEmpty(optBatchno))
                 {
-                    teams = new TeamBll().GetTeamGroups(optBatchno, optType, pageIndex.GetValueOrDefault(1));
+                    teams = new TeamBll().GetTeamGroups(optBatchno, optType);
                 }
-                else
-                {
-                    teams = new PagedList<TeamGroupView>(teams, 1, 1);
-                }
+              
 
                 List<SelectListItem> Sexy = new MemberBll().GetDict(1);
                 ViewData["Sexy"] = Sexy;
