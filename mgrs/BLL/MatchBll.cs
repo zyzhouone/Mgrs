@@ -829,7 +829,11 @@ namespace BLL
             using (var db = new BFdbContext())
             {
                 StringBuilder sql = new StringBuilder();
-                sql.Append("SELECT a.*,m.match_name,mu.name as nickname,tm.teamname,l.name as line_name,ls.linename as lines_name  FROM tbl_coupon a left join  tbl_match m on m.match_id = a.matchid left join tbl_users mu on mu.userid = a.userid  left join tbl_teams tm on tm.teamid = a.teamid left join tbl_line l on l.lineid = a.lineid left join tbl_lines ls on ls.lines_id = a.linesid WHERE 1=1");
+                //sql.Append("SELECT a.*,m.match_name,mu.name as nickname,tm.teamname,l.name as line_name,ls.linename as lines_name  FROM tbl_coupon a left join  tbl_match m on m.match_id = a.matchid left join tbl_users mu on mu.userid = a.userid  left join tbl_teams tm on tm.teamid = a.teamid left join tbl_line l on l.lineid = a.lineid left join tbl_lines ls on ls.lines_id = a.linesid WHERE 1=1");
+                sql.Append(@"SELECT a.*,m.match_name,mu.name as nickname,
+                                CONCAT(tm.teamname,'【',case tm.status when '1' then '预报名成功' when '0' then '正式支付成功' when '6' then '开始组队' when '2' then '报名未完成' else tm.status end ,'】') as teamname,
+                                l.name as line_name,ls.linename as lines_name  
+                                FROM tbl_coupon a left join  tbl_match m on m.match_id = a.matchid left join tbl_users mu on mu.userid = a.userid  left join tbl_teams tm on tm.teamid = a.teamid left join tbl_line l on l.lineid = a.lineid left join tbl_lines ls on ls.lines_id = a.linesid WHERE 1=1");
 
                 if (!string.IsNullOrEmpty(matchname))
                     sql.AppendFormat(" AND m.match_name  like '%{0}%'", matchname);
