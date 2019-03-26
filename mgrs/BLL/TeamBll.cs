@@ -656,7 +656,17 @@ left join tbl_match_extra e on e.teamid=t.teamid
                 return db.SqlQuery<SelectListItem>(sql.ToString()).ToList();
             }
         }
-
+        /// <summary>
+        /// 队伍组合 zzy 2019-03-26
+        /// </summary>
+        /// <param name="teamid1"></param>
+        /// <param name="teamid2"></param>
+        /// <param name="teamid3"></param>
+        /// <param name="teamid4"></param>
+        /// <param name="teamid5"></param>
+        /// <param name="optLines"></param>
+        /// <param name="optLine"></param>
+        /// <returns></returns>
         public string TeamsConBine(string teamid1, string teamid2, string teamid3, string teamid4, string teamid5, string optLines, string optLine)
         {
             using (var db = new BFdbContext())

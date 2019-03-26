@@ -964,6 +964,12 @@ namespace BLL
             }
         }
 
+        /// <summary>
+        /// zzy 2019-03-26
+        /// 获取线路
+        /// </summary>
+        /// <param name="lineid"></param>
+        /// <returns></returns>
         public List<SelectListItem> GetlinesList2(string lineid)
         {
             using (var db = new BFdbContext())
