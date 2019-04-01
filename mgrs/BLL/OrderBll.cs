@@ -26,12 +26,12 @@ namespace BLL
             using (var db = new BFdbContext())
             {
                 StringBuilder sql = new StringBuilder();
-                sql.Append(@"select  o.orderid,match_name as Matchname,t.teamname,mobile,t.teamtype,ordertotal,orderstatus,l.name as linename,ls.linename as linesname
-                                ,IFNULL(o.paytime,p.paytime) as paytime,p.paytype
+                sql.Append(@"select IFNULL(p.trade_no, o.orderid) as orderid,match_name as Matchname,t.teamname,mobile,t.teamtype,ordertotal,orderstatus,l.name as linename,ls.linename as linesname
+                                ,IFNULL(IFNULL( o.paytime, p.paytime ) ,p.createtime)AS paytime,IFNULL(p.paytype,'alipay') as  paytype
                                 from (select r.*,r.status as orderstatus,m.match_name,u.mobile 
                                 from tbl_orders r,tbl_users u,tbl_match m 
                                 where  u.userid = r.userid and m.match_id = r.match_id) o
-                                left join tbl_pay p on p.orderid=o.orderid
+                                left join (select orderid,trade_no,paytype,max(paytime) as paytime,max(createtime) as createtime from tbl_pay group by orderid,trade_no,paytype) p on p.orderid=o.orderid
                                 inner join tbl_teams t on t.teamid = o.teamid
                                 left join tbl_line l on l.lineid = t.lineid
                                 left join tbl_lines ls on ls.lines_id = t.linesid 
