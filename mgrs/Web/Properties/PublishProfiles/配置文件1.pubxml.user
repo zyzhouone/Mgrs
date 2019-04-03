@@ -28,7 +28,7 @@
       <publishTime>04/17/2018 20:38:25</publishTime>
     </File>
     <File Include="Areas/Main/Views/Match/Create.cshtml">
-      <publishTime>12/30/2017 18:31:01</publishTime>
+      <publishTime>01/24/2019 13:29:50</publishTime>
     </File>
     <File Include="Areas/Main/Views/Match/CreateCoupon.cshtml">
       <publishTime>03/14/2018 19:24:54</publishTime>
@@ -37,7 +37,7 @@
       <publishTime>03/14/2017 20:22:03</publishTime>
     </File>
     <File Include="Areas/Main/Views/Match/Edit.cshtml">
-      <publishTime>12/30/2017 18:30:57</publishTime>
+      <publishTime>02/26/2019 20:49:09</publishTime>
     </File>
     <File Include="Areas/Main/Views/Match/Index.cshtml">
       <publishTime>03/14/2017 20:22:03</publishTime>
@@ -55,7 +55,7 @@
       <publishTime>03/28/2017 20:58:28</publishTime>
     </File>
     <File Include="Areas/Main/Views/Match/LinesEdit.cshtml">
-      <publishTime>03/28/2017 20:58:28</publishTime>
+      <publishTime>03/02/2019 21:51:45</publishTime>
     </File>
     <File Include="Areas/Main/Views/Match/lineType.cshtml">
       <publishTime>04/10/2017 23:13:18</publishTime>
@@ -88,10 +88,10 @@
       <publishTime>03/14/2017 20:22:02</publishTime>
     </File>
     <File Include="Areas/Main/Views/Member/Index.cshtml">
-      <publishTime>03/14/2017 20:22:02</publishTime>
+      <publishTime>03/20/2019 10:25:14</publishTime>
     </File>
     <File Include="Areas/Main/Views/Order/Index.cshtml">
-      <publishTime>04/06/2018 19:40:08</publishTime>
+      <publishTime>03/01/2019 20:30:17</publishTime>
     </File>
     <File Include="Areas/Main/Views/Player/List.cshtml">
       <publishTime>11/21/2016 22:51:26</publishTime>
@@ -115,13 +115,19 @@
       <publishTime>03/14/2017 20:22:02</publishTime>
     </File>
     <File Include="Areas/Main/Views/Statistics/Other.cshtml">
-      <publishTime>01/03/2018 20:44:44</publishTime>
+      <publishTime>03/20/2019 11:05:15</publishTime>
     </File>
     <File Include="Areas/Main/Views/Statistics/PlayerInfo.cshtml">
       <publishTime>09/17/2017 21:43:56</publishTime>
     </File>
     <File Include="Areas/Main/Views/Statistics/SignUp.cshtml">
       <publishTime>12/30/2017 21:44:42</publishTime>
+    </File>
+    <File Include="Areas/Main/Views/System/BannerManager.cshtml">
+      <publishTime>01/26/2019 14:02:38</publishTime>
+    </File>
+    <File Include="Areas/Main/Views/System/CreateBinner.cshtml">
+      <publishTime>01/24/2019 17:43:28</publishTime>
     </File>
     <File Include="Areas/Main/Views/Team/Create.cshtml">
       <publishTime>03/14/2017 20:22:02</publishTime>
@@ -130,10 +136,13 @@
       <publishTime>04/21/2017 21:12:37</publishTime>
     </File>
     <File Include="Areas/Main/Views/Team/Index.cshtml">
-      <publishTime>04/17/2018 20:15:33</publishTime>
+      <publishTime>03/26/2019 17:59:50</publishTime>
     </File>
     <File Include="Areas/Main/Views/Team/SetPlayer.cshtml">
       <publishTime>11/21/2016 22:51:26</publishTime>
+    </File>
+    <File Include="Areas/Main/Views/Team/TeamGroup.cshtml">
+      <publishTime>03/25/2019 09:36:48</publishTime>
     </File>
     <File Include="Areas/Main/Views/Team/TeamUpsts.cshtml">
       <publishTime>04/21/2017 22:13:32</publishTime>
@@ -1806,6 +1815,9 @@
     <File Include="Assets/img/loading.gif">
       <publishTime>11/21/2016 22:52:03</publishTime>
     </File>
+    <File Include="Assets/img/loadingBar.gif">
+      <publishTime>03/24/2019 22:32:22</publishTime>
+    </File>
     <File Include="Assets/img/logo-big.png">
       <publishTime>11/21/2016 22:52:03</publishTime>
     </File>
@@ -2739,6 +2751,9 @@
     <File Include="Assets/js/jquery.cookie.js">
       <publishTime>11/21/2016 22:52:04</publishTime>
     </File>
+    <File Include="Assets/js/jquery.json-2.3.min.js">
+      <publishTime>03/24/2019 22:54:25</publishTime>
+    </File>
     <File Include="Assets/js/jquery.pulsate.min.js">
       <publishTime>11/21/2016 22:52:04</publishTime>
     </File>
@@ -2773,10 +2788,10 @@
       <publishTime>11/21/2016 22:53:26</publishTime>
     </File>
     <File Include="bin/BLL.dll">
-      <publishTime>05/06/2018 21:08:12</publishTime>
+      <publishTime>03/26/2019 18:00:23</publishTime>
     </File>
     <File Include="bin/DAL.dll">
-      <publishTime>05/06/2018 21:08:11</publishTime>
+      <publishTime>03/26/2019 18:00:23</publishTime>
     </File>
     <File Include="bin/EntityFramework.dll">
       <publishTime>11/21/2016 22:52:47</publishTime>
@@ -2791,7 +2806,7 @@
       <publishTime>07/08/2013 15:15:08</publishTime>
     </File>
     <File Include="bin/Model.dll">
-      <publishTime>05/06/2018 21:08:09</publishTime>
+      <publishTime>03/26/2019 18:00:21</publishTime>
     </File>
     <File Include="bin/Newtonsoft.Json.dll">
       <publishTime>10/02/2013 12:10:10</publishTime>
@@ -2848,10 +2863,10 @@
       <publishTime>07/09/2013 11:05:12</publishTime>
     </File>
     <File Include="bin/Utls.dll">
-      <publishTime>05/06/2018 21:08:09</publishTime>
+      <publishTime>03/26/2019 18:00:21</publishTime>
     </File>
     <File Include="bin/Web.dll">
-      <publishTime>05/06/2018 21:08:13</publishTime>
+      <publishTime>03/26/2019 18:00:26</publishTime>
     </File>
     <File Include="bin/WebGrease.dll">
       <publishTime>11/21/2016 22:53:33</publishTime>
@@ -2893,7 +2908,7 @@
       <publishTime>11/21/2016 22:52:29</publishTime>
     </File>
     <File Include="Config/MenuConfig.xml">
-      <publishTime>12/30/2017 21:36:13</publishTime>
+      <publishTime>03/24/2019 21:30:10</publishTime>
     </File>
     <File Include="Content/Images/angel.png">
       <publishTime>11/21/2016 22:53:35</publishTime>
@@ -3571,7 +3586,7 @@
       <publishTime>11/21/2016 22:51:27</publishTime>
     </File>
     <File Include="Web.config">
-      <publishTime>05/06/2018 21:08:30</publishTime>
+      <publishTime>03/26/2019 18:00:29</publishTime>
     </File>
   </ItemGroup>
 </Project>

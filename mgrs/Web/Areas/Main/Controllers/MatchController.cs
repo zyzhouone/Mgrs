@@ -1124,12 +1124,12 @@ namespace Web.Areas.Main.Controllers
         }
 
 
-        public ActionResult Coupon(string matchname, string teamname, string company, string mobile, string couponchar, string optType, string optStatus, int? pageIndex)
+        public ActionResult Coupon(string matchname, string teamname, string company, string mobile, string couponchar, string optType, string optStatus,string optTeamStatus, int? pageIndex)
         {
             var coupon = new List<tblcouponView>();
             try
             {
-                coupon = new MatchBll().GetCoupons(matchname, teamname, company, mobile, couponchar, optType, optStatus, pageIndex.GetValueOrDefault(1));
+                coupon = new MatchBll().GetCoupons(matchname, teamname, company, mobile, couponchar, optType, optStatus, optTeamStatus, pageIndex.GetValueOrDefault(1));
                 List<SelectListItem> Status = new MemberBll().GetDict(11);
                 ViewData["Status"] = Status;
                 foreach (SelectListItem r in Status)
@@ -1147,6 +1147,32 @@ namespace Web.Areas.Main.Controllers
                         ViewBag.Type += "<option value='" + r.Value.ToString() + "'selected>" + r.Text.ToString() + "</option>";
                     else
                         ViewBag.Type += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
+                }
+
+                List<SelectListItem> TeamStatus = new List<SelectListItem>();
+              
+                SelectListItem item2=new SelectListItem();
+                item2.Text = "预报名成功";
+                item2.Value="1";
+                SelectListItem item3=new SelectListItem();
+                item3.Text = "正式支付成功";
+                item3.Value="0";
+                SelectListItem item4=new SelectListItem();
+                item4.Text="开始组队";
+                item4.Value="6";
+                SelectListItem item5=new SelectListItem();
+                item5.Text = "报名未完成";
+                item5.Value="2";
+                TeamStatus.Add(item2);
+                TeamStatus.Add(item3);
+                TeamStatus.Add(item4);
+                TeamStatus.Add(item5);
+                foreach (SelectListItem r in TeamStatus)
+                {
+                    if (optTeamStatus == r.Value)
+                        ViewBag.TeamStatus += "<option value='" + r.Value.ToString() + "'selected>" + r.Text.ToString() + "</option>";
+                    else
+                        ViewBag.TeamStatus += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
                 }
             }
             catch (Exception e)

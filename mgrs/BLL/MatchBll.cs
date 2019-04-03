@@ -824,7 +824,7 @@ namespace BLL
         /// <param name="teamname"></param>
         /// <param name="pageindex"></param>
         /// <returns></returns>
-        public PagedList<tblcouponView> GetCoupons(string matchname,string teamname,string company, string mobile,string couponchar, string optType,string optStatus, int pageindex)
+        public PagedList<tblcouponView> GetCoupons(string matchname,string teamname,string company, string mobile,string couponchar, string optType,string optStatus,string optTeamStatus, int pageindex)
         {
             using (var db = new BFdbContext())
             {
@@ -855,6 +855,10 @@ namespace BLL
 
                 if (!string.IsNullOrEmpty(optType))
                     sql.AppendFormat(" AND a.type = '{0}'", optType);
+
+                if (!string.IsNullOrEmpty(optTeamStatus))
+                    sql.AppendFormat(" AND tm.status = '{0}'", optTeamStatus);
+                
 
                 return db.SqlQuery<tblcouponView, DateTime?>(sql.ToString(), pageindex, p => p.Createtime);
             }

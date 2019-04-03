@@ -37,6 +37,13 @@
                     </select>
                 </label>
                 <label>
+                    <span>队伍状态：</span>
+                    <select id="optTeamStatus" name="optTeamStatus" class="m-wrap small" style="width:180px">
+                        <option value="">请选择状态</option>
+                        @Html.Raw(ViewBag.TeamStatus)
+                    </select>
+                </label>
+                <label>
                     <span>类型：</span>
                     <select id="optType" name="optType" class="m-wrap small" style="width:180px">
                         <option value="">请选择类型</option>
