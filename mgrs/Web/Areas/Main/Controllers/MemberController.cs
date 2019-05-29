@@ -9,6 +9,7 @@ using Utls;
 using BLL;
 using System.Text;
 using System.Security.Cryptography;
+using Web.Areas.Main.Models;
 
 namespace Web.Areas.Main.Controllers
 {
@@ -17,21 +18,34 @@ namespace Web.Areas.Main.Controllers
         //
         // GET: /Main/Member/
 
-        public ActionResult Index(string id, string tel,string nickName, int? pageIndex)
+        public ActionResult Index(string id, string tel, string nickName, string optStatus, int? pageIndex)
         {
             var members = new List<tblusersView>();
             try
             {
-                members = new MemberBll().GetMembers(id, tel, nickName, pageIndex.GetValueOrDefault(1));
                 List<SelectListItem> Status = new MemberBll().GetDict(6);
+
+                foreach (SelectListItem r in Status)
+                {
+                    if (optStatus == r.Value)
+                        ViewBag.optStatus += "<option value='" + r.Value.ToString() + "'selected>" + r.Text.ToString() + "</option>";
+                    else
+                        ViewBag.optStatus += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
+                }
+
+                members = new MemberBll().GetMembers(id, tel, nickName, optStatus, pageIndex.GetValueOrDefault(1));
+                
                 ViewData["Status"] = Status;
 
-            }catch
+            }
+            catch
             {
 
             }
             return View(members);
         }
+
+    
 
         public ActionResult Create()
         {
@@ -42,19 +56,19 @@ namespace Web.Areas.Main.Controllers
 
             foreach (SelectListItem r in Sexy)
             {
-                    ViewBag.Sexy += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
+                ViewBag.Sexy += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
             }
 
             foreach (SelectListItem r in CardType)
             {
-                    ViewBag.CardType += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
+                ViewBag.CardType += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
             }
 
             foreach (SelectListItem r in Status)
             {
-                    ViewBag.Status += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
+                ViewBag.Status += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
             }
-            
+
             return View();
         }
 
@@ -74,7 +88,7 @@ namespace Web.Areas.Main.Controllers
             {
                 model.birthday = DateTime.Parse(fc["birthday"].ToString());
             }
-            
+
             model.Status = Int32.Parse(fc["optStatus"].ToString());
             var bll = new MemberBll();
 
@@ -135,7 +149,7 @@ namespace Web.Areas.Main.Controllers
                 else
                     ViewBag.Status += "<option value='" + r.Value.ToString() + "'>" + r.Text.ToString() + "</option>";
             }
-            
+
 
             return View(model);
         }
@@ -147,13 +161,14 @@ namespace Web.Areas.Main.Controllers
             var model = bll.GetMember(id);
             model.Name = fc["Name"].ToString();
             string pas = fc["Passwd"].ToString().Trim();
-            if(pas!="******"){
+            if (pas != "******")
+            {
                 model.Passwd = MD5Encrypt(pas);
             }
             model.sexy = fc["optSexy"].ToString();
             model.cardtype = fc["optCardType"].ToString();
             model.cardno = fc["cardno"].ToString();
-            if (fc["birthday"]!= null)
+            if (fc["birthday"] != null)
             {
                 model.birthday = DateTime.Parse(fc["birthday"].ToString());
             }
@@ -215,13 +230,14 @@ namespace Web.Areas.Main.Controllers
 
             return RedirectToAction("Index");
         }
-        public String MD5Encrypt(string code){
+        public String MD5Encrypt(string code)
+        {
 
-            byte[] result = Encoding.Default.GetBytes(code.Trim());   
+            byte[] result = Encoding.Default.GetBytes(code.Trim());
             MD5 md5 = new MD5CryptoServiceProvider();
             byte[] output = md5.ComputeHash(result);
-            return  BitConverter.ToString(output).Replace("-", ""); 
+            return BitConverter.ToString(output).Replace("-", "");
         }
-       
+
     }
 }

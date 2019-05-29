@@ -39,6 +39,13 @@
                     <span>微信名：</span>
                     @Html.TextBox("nickName", null, new { @class = "m-wrap small" })
                 </label>
+                <label>
+                    <span>状态：</span>
+                    <select id="optStatus" name="optStatus" class="m-wrap small" style="width:90px">
+                        <option value="">-全部-</option>
+                        @Html.Raw(ViewBag.optStatus)
+                    </select>
+                </label>
             </div>
         }
     </div>

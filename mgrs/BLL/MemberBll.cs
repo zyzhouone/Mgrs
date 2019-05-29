@@ -19,7 +19,7 @@ namespace BLL
         /// <param name="tel"></param>
         /// <param name="pageindex"></param>
         /// <returns></returns>
-        public PagedList<tblusersView> GetMembers(string id, string tel,string nickName, int pageindex)
+        public PagedList<tblusersView> GetMembers(string id, string tel, string nickName,string status, int pageindex)
         {
             using (var db = new BFdbContext())
             {
@@ -37,6 +37,9 @@ WHERE 1=1");
 
                 if (!string.IsNullOrEmpty(nickName))
                     sql.AppendFormat(" AND w.nickName like '%{0}%'", nickName);
+
+                if (!string.IsNullOrEmpty(status))
+                    sql.AppendFormat(" AND a.status={0} ", status);
 
 
                 return db.SqlQuery<tblusersView, DateTime?>(sql.ToString(), pageindex, p => p.Last_Time);
@@ -81,7 +84,7 @@ WHERE 1=1");
                 StringBuilder sql = new StringBuilder();
                 sql.Append("SELECT a.code as value,a.name as text FROM tbl_dict a WHERE 1=1");
 
-                    sql.AppendFormat(" AND a.dictid = {0}", dictid);
+                sql.AppendFormat(" AND a.dictid = {0}", dictid);
 
                 return db.SqlQuery<SelectListItem>(sql.ToString()).ToList();
             }
@@ -150,5 +153,7 @@ WHERE 1=1");
                 return res;
             }
         }
+
+      
     }
 }
