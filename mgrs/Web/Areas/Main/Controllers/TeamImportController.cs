@@ -231,9 +231,11 @@ namespace Web.Areas.Main.Controllers
         /// </summary>
         /// <param name="matchid"></param>
         /// <param name="fid"></param>
-        /// <returns></returns>
+        /// <returns></returns>、
+        public string seqno;
         public ActionResult confirm(string matchid, string fid)
         {
+           
             try
             {
                 ViewBag.error = "0";
@@ -411,6 +413,8 @@ namespace Web.Areas.Main.Controllers
                         muser.Area2 = "1";
 
                     lstMatchusers.Add(muser);
+                    //edit by pang
+                    seqno = row["手机号码"].ToString().Trim();
                 }
 
                 return View(lstMatchusers);
@@ -527,6 +531,7 @@ namespace Web.Areas.Main.Controllers
                         muser.Area2 = "1";
 
                     lstMatchusers.Add(muser);
+                  
                 }
 
                 int count = 0;
