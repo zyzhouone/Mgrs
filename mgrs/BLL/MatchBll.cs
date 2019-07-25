@@ -245,6 +245,18 @@ namespace BLL
             }
         }
 
+        public int TopMatchCancel(string matchid)
+        {
+            using (var db = new BFdbContext())
+            {
+               
+                string sql = string.Format(@"update tbl_match set sort=null where match_id='{0}'", matchid);
+
+
+                return db.ExecuteSqlCommand(sql);
+            }
+        }
+
         /// <summary>
         /// 查询线路类型信息
         /// </summary>

@@ -379,6 +379,32 @@ namespace Web.Areas.Main.Controllers
             return jr;
 
         }
+
+
+        /// <summary>
+        /// 取消置顶赛事
+        /// zzy 2019-07-25
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="fc"></param>
+        /// <returns></returns>
+        [HttpPost]
+        public JsonResult TopMatchCancel(string id)
+        {
+
+            var bll = new MatchBll();
+            JsonResult jr = new JsonResult();
+            try
+            {
+                jr.Data = bll.TopMatchCancel(id);
+            }
+            catch (Exception ex)
+            {
+                jr.Data = -1;
+            }
+            return jr;
+
+        }
         [HttpPost]
         public ActionResult Delete(List<string> ids)
         {
